@@ -13,6 +13,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
+using Res = Emtf.Resources.ConcurrentTestRunException;
+
 namespace Emtf
 {
     /// <summary>
@@ -53,7 +55,7 @@ namespace Emtf
         #region Constructors
 
         internal ConcurrentTestRunException(IList<Exception> exceptions)
-            : base("An unexpected exception occurred in a at least one worker thread.")
+            : base(Res.ctor_Message)
         {
             if (exceptions == null)
                 throw new ArgumentNullException("exceptions");
@@ -86,7 +88,6 @@ namespace Emtf
         /// <exception cref="System.ArgumentNullException">
         /// Thrown if <paramref name="info"/> is null.
         /// </exception>
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

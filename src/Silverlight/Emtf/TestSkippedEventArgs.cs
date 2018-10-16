@@ -9,6 +9,8 @@
 using System;
 using System.Reflection;
 
+using Res = Emtf.Resources.TestSkippedEventArgs;
+
 namespace Emtf
 {
     /// <summary>
@@ -104,13 +106,13 @@ namespace Emtf
             : base(testMethod, testDescription, startTime, concurrentTestRun)
         {
             if (!Enum.IsDefined(typeof(SkipReason), reason))
-                throw new ArgumentException("The value of 'reason' is not defined in enumeration 'SkipReason'.", "reason");
+                throw new ArgumentException(Res.ctor_ReasonInvalid, "reason");
 
             if (exception == null && reason == SkipReason.ConstructorThrewException)
-                throw new ArgumentException("The parameter 'exception' must not be null if 'reason' is SkipReason.ConstructorThrewException.", "exception");
+                throw new ArgumentException(Res.ctor_ReasonException, "exception");
 
             if (exception != null && reason != SkipReason.ConstructorThrewException)
-                throw new ArgumentException("The parameter 'exception' must be null if 'reason' is not SkipReason.ConstructorThrewException.", "exception");
+                throw new ArgumentException(Res.ctor_ReasonNotException, "exception");
 
             _reason    = reason;
             _message   = message;

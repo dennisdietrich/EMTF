@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EMTF 2.0 (Silverlight)")]
+[assembly: AssemblyTitle("EMTF 2.1 (Silverlight)")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
@@ -32,5 +34,15 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2.0.2.0")]
-[assembly: AssemblyFileVersion("2.0.2.0")]
+[assembly: AssemblyVersion("2.1.1.0")]
+[assembly: AssemblyFileVersion("2.1.1.0")]
+
+[assembly: NeutralResourcesLanguageAttribute("en")]
+
+[assembly: SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Scope = "member", Target = "Emtf.Dynamic.InstanceWrapperBase.#Emtf.Dynamic.IInstanceWrapper.WrappedInstance", Justification = "InstanceWrapperBase is a base class for generated types so IInstanceWrapper will never be reimplemented and is also only useful to external callers")]
+[assembly: SuppressMessage("Microsoft.Naming", "CA1701:ResourceStringCompoundWordsShouldBeCasedCorrectly", MessageId = "PostTest", Scope = "resource", Target = "Emtf.Resources.Logging.DebugLogger.resources")]
+[assembly: SuppressMessage("Microsoft.Naming", "CA1701:ResourceStringCompoundWordsShouldBeCasedCorrectly", MessageId = "PreTest",  Scope = "resource", Target = "Emtf.Resources.Logging.DebugLogger.resources")]
+[assembly: SuppressMessage("Microsoft.Naming", "CA1701:ResourceStringCompoundWordsShouldBeCasedCorrectly", MessageId = "PostTest", Scope = "resource", Target = "Emtf.Resources.Logging.StreamLogger.resources")]
+[assembly: SuppressMessage("Microsoft.Naming", "CA1701:ResourceStringCompoundWordsShouldBeCasedCorrectly", MessageId = "PreTest",  Scope = "resource", Target = "Emtf.Resources.Logging.StreamLogger.resources")]
+[assembly: SuppressMessage("Microsoft.Naming", "CA1701:ResourceStringCompoundWordsShouldBeCasedCorrectly", MessageId = "PostTest", Scope = "resource", Target = "Emtf.Resources.TestExecutor.resources")]
+[assembly: SuppressMessage("Microsoft.Naming", "CA1701:ResourceStringCompoundWordsShouldBeCasedCorrectly", MessageId = "PreTest",  Scope = "resource", Target = "Emtf.Resources.TestExecutor.resources")]

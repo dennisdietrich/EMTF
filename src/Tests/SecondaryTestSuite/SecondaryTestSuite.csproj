@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SecondaryTestSuite</RootNamespace>
     <AssemblyName>SecondaryTestSuite</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,18 +34,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -63,12 +60,6 @@
     </Compile>
     <Compile Include="..\PrimaryTestSuite\EmtfTests.cs">
       <Link>External\PrimaryTestSuite\EmtfTests.cs</Link>
-    </Compile>
-    <Compile Include="..\PrimaryTestSuite\Extensions\ConstructorInfoExtensions.cs">
-      <Link>External\PrimaryTestSuite\Extensions\ConstructorInfoExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\PrimaryTestSuite\Extensions\TestExecutorExtensions.cs">
-      <Link>External\PrimaryTestSuite\Extensions\TestExecutorExtensions.cs</Link>
     </Compile>
     <Compile Include="..\PrimaryTestSuite\MethodBaseExtensionsTests.cs">
       <Link>External\PrimaryTestSuite\MethodBaseExtensionsTests.cs</Link>
@@ -169,10 +160,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Desktop\EmtfLogging\EmtfLogging.csproj">
-      <Project>{E7410F6D-F264-4917-96EA-D99EFFD2CB97}</Project>
-      <Name>EmtfLogging %28Desktop\EmtfLogging%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Desktop\Emtf\Emtf.csproj">
       <Project>{3DD1634C-9288-42C6-B1AA-66AE61C68598}</Project>
       <Name>Emtf %28Desktop\Emtf%29</Name>
@@ -183,11 +170,4 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

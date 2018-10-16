@@ -8,6 +8,8 @@
 
 using System;
 
+using Res = Emtf.Resources.TestRunEventArgs;
+
 namespace Emtf
 {
     /// <summary>
@@ -82,7 +84,7 @@ namespace Emtf
         public TestRunEventArgs(Int64 total, DateTime startTime, Boolean concurrentTestRun)
         {
             if (total < 0)
-                throw new ArgumentOutOfRangeException("total", "Total test count must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException("total", Res.ctor_InvalidTotal);
 
             _total             = total;
             _startTime         = startTime;

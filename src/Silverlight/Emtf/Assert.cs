@@ -10,6 +10,8 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 
+using Res = Emtf.Resources.Assert;
+
 namespace Emtf
 {
     /// <summary>
@@ -52,7 +54,7 @@ namespace Emtf
         public static void IsTrue(Boolean condition, String message)
         {
             if (!condition)
-                throw new AssertException("Assert.IsTrue failed.", message);
+                throw new AssertException(Res.IsTrue, message);
         }
 
         /// <summary>
@@ -88,7 +90,7 @@ namespace Emtf
         public static void IsFalse(Boolean condition, String message)
         {
             if (condition)
-                throw new AssertException("Assert.IsFalse failed.", message);
+                throw new AssertException(Res.IsFalse, message);
         }
 
         /// <summary>
@@ -124,7 +126,7 @@ namespace Emtf
         public static void IsNull(Object value, String message)
         {
             if (value != null)
-                throw new AssertException("Assert.IsNull failed.", message);
+                throw new AssertException(Res.IsNull, message);
         }
 
         /// <summary>
@@ -160,7 +162,7 @@ namespace Emtf
         public static void IsNotNull(Object value, String message)
         {
             if (value == null)
-                throw new AssertException("Assert.IsNotNull failed.", message);
+                throw new AssertException(Res.IsNotNull, message);
         }
 
         /// <summary>
@@ -209,7 +211,7 @@ namespace Emtf
         {
             if (!Object.ReferenceEquals(expected, actual))
                 throw new AssertException(String.Format(CultureInfo.CurrentCulture,
-                                                        "Assert.AreSame failed. Expected: \"{0}\". Actual: \"{1}\".",
+                                                        Res.AreSame,
                                                         expected,
                                                         actual),
                                           message);
@@ -261,7 +263,7 @@ namespace Emtf
         {
             if (Object.ReferenceEquals(notExpected, actual))
                 throw new AssertException(String.Format(CultureInfo.CurrentCulture,
-                                                        "Assert.AreNotSame failed. Not expected: \"{0}\".",
+                                                        Res.AreNotSame,
                                                         notExpected),
                                           message);
         }
@@ -329,7 +331,7 @@ namespace Emtf
 
             if (expected == null || !expected.Equals(actual))
                 throw new AssertException(String.Format(CultureInfo.CurrentCulture,
-                                                        "Assert.AreEqual failed. Expected: \"{0}\". Actual: \"{1}\".",
+                                                        Res.AreEqual,
                                                         expected,
                                                         actual),
                                           message);
@@ -396,7 +398,7 @@ namespace Emtf
             if ((notExpected == null && actual == null) ||
                 (notExpected != null && notExpected.Equals(actual)))
                 throw new AssertException(String.Format(CultureInfo.CurrentCulture,
-                                                        "Assert.AreNotEqual failed. Not expected: \"{0}\".",
+                                                        Res.AreNotEqual,
                                                         notExpected),
                                           message);
         }
@@ -478,7 +480,7 @@ namespace Emtf
             {
                 if (e.GetType() != typeof(T))
                     throw new AssertException(String.Format(CultureInfo.CurrentCulture,
-                                                            "Assert.Throws failed. Expected exception type: {0}. Actual exception type: {1}. Exception message: {2}",
+                                                            Res.Throws_IncorrectExceptionType,
                                                             typeof(T).FullName,
                                                             e.GetType().FullName,
                                                             e.Message),
@@ -491,7 +493,7 @@ namespace Emtf
             }
 
             throw new AssertException(String.Format(CultureInfo.CurrentCulture,
-                                                    "Assert.Throws failed. No exception was thrown (expected exception type: {0}).",
+                                                    Res.Throws_NoException,
                                                     typeof(T).FullName),
                                       message);
         }

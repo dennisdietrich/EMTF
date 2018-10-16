@@ -4,8 +4,8 @@
  * http://www.opensource.org/licenses/ms-pl.html       *
  *******************************************************/
 
+using Emtf.Dynamic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PrimaryTestSuite.Extensions;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -150,14 +150,8 @@ namespace PrimaryTestSuite
         [Description("Verifies that .ctor(SerializationInfo, StreamingContext) throws an ArgumentNullException if the first parameter is null")]
         public void ctor_SerializationInfo_StreamingContext_FirstParamNull()
         {
-            ConstructorInfo ctor = typeof(EmtfAssertException).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
-                                                                              null,
-                                                                              new Type[] { typeof(SerializationInfo), typeof(StreamingContext) },
-                                                                              null);
-
-            Assert.IsNotNull(ctor);
-
-            ctor.Invoke(new Object[] { (SerializationInfo)null, new StreamingContext() }, true);
+            dynamic assertExceptionConstructors = WrapperFactory.CreateConstructorWrapper(typeof(EmtfAssertException));
+            assertExceptionConstructors.CreateInstance((SerializationInfo)null, new StreamingContext());
         }
 
         [TestMethod]

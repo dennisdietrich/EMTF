@@ -25,8 +25,8 @@ namespace PrimaryTestSuite
         {
             _invokeMethodInfo = typeof(EmtfTestExecutor).Assembly.GetType("Emtf.ConstructorInfoExtensions").GetMethod("Invoke", BindingFlags.Static | BindingFlags.NonPublic);
 
-            _objectConstructorInfo            = typeof(Object).GetConstructor(new Type[0]);
-            _constructorThrowsConstructorInfo = typeof(ConstructorThrows).GetConstructor(new Type[0]);
+            _objectConstructorInfo            = typeof(Object).GetConstructor(Type.EmptyTypes);
+            _constructorThrowsConstructorInfo = typeof(ConstructorThrows).GetConstructor(Type.EmptyTypes);
         }
 
         [TestMethod]

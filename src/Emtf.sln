@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97E99F57-6938-4A69-9A4A-DED8C0976115}"
 	ProjectSection(SolutionItems) = preProject
 		Emtf.vsmdi = Emtf.vsmdi
@@ -15,11 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F1DE6FCF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emtf", "Silverlight\Emtf\Emtf.csproj", "{D6600E4F-9826-40A3-846D-6CA79186C798}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtfLogging", "Silverlight\EmtfLogging\EmtfLogging.csproj", "{65EF8450-60B1-4602-AF90-F4C431814E62}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emtf", "Desktop\Emtf\Emtf.csproj", "{3DD1634C-9288-42C6-B1AA-66AE61C68598}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtfLogging", "Desktop\EmtfLogging\EmtfLogging.csproj", "{E7410F6D-F264-4917-96EA-D99EFFD2CB97}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimaryTestSuite", "Tests\PrimaryTestSuite\PrimaryTestSuite.csproj", "{38D7B68C-793D-47A7-AA85-F289B7ACB9EF}"
 EndProject
@@ -27,11 +23,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionTestLibrary", "Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondaryTestSuite", "Tests\SecondaryTestSuite\SecondaryTestSuite.csproj", "{80B5EF88-7A41-4F18-92FD-1AAA083818E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerTests", "Tests\LoggerTests\LoggerTests.csproj", "{F7A329FA-8F0A-43DC-8F24-07364E34E5D4}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs09.codeplex.com/
 		SccLocalPath0 = .
@@ -39,34 +33,22 @@ Global
 		SccProjectTopLevelParentUniqueName1 = Emtf.sln
 		SccProjectName1 = Silverlight/Emtf
 		SccLocalPath1 = Silverlight\\Emtf
-		SccProjectUniqueName2 = Silverlight\\EmtfLogging\\EmtfLogging.csproj
+		SccProjectUniqueName2 = Desktop\\Emtf\\Emtf.csproj
 		SccProjectTopLevelParentUniqueName2 = Emtf.sln
-		SccProjectName2 = Silverlight/EmtfLogging
-		SccLocalPath2 = Silverlight\\EmtfLogging
-		SccProjectUniqueName3 = Desktop\\Emtf\\Emtf.csproj
+		SccProjectName2 = Desktop/Emtf
+		SccLocalPath2 = Desktop\\Emtf
+		SccProjectUniqueName3 = Tests\\PrimaryTestSuite\\PrimaryTestSuite.csproj
 		SccProjectTopLevelParentUniqueName3 = Emtf.sln
-		SccProjectName3 = Desktop/Emtf
-		SccLocalPath3 = Desktop\\Emtf
-		SccProjectUniqueName4 = Desktop\\EmtfLogging\\EmtfLogging.csproj
+		SccProjectName3 = Tests/PrimaryTestSuite
+		SccLocalPath3 = Tests\\PrimaryTestSuite
+		SccProjectUniqueName4 = Tests\\ReflectionTestLibrary\\ReflectionTestLibrary.csproj
 		SccProjectTopLevelParentUniqueName4 = Emtf.sln
-		SccProjectName4 = Desktop/EmtfLogging
-		SccLocalPath4 = Desktop\\EmtfLogging
-		SccProjectUniqueName5 = Tests\\PrimaryTestSuite\\PrimaryTestSuite.csproj
+		SccProjectName4 = Tests/ReflectionTestLibrary
+		SccLocalPath4 = Tests\\ReflectionTestLibrary
+		SccProjectUniqueName5 = Tests\\SecondaryTestSuite\\SecondaryTestSuite.csproj
 		SccProjectTopLevelParentUniqueName5 = Emtf.sln
-		SccProjectName5 = Tests/PrimaryTestSuite
-		SccLocalPath5 = Tests\\PrimaryTestSuite
-		SccProjectUniqueName6 = Tests\\ReflectionTestLibrary\\ReflectionTestLibrary.csproj
-		SccProjectTopLevelParentUniqueName6 = Emtf.sln
-		SccProjectName6 = Tests/ReflectionTestLibrary
-		SccLocalPath6 = Tests\\ReflectionTestLibrary
-		SccProjectUniqueName7 = Tests\\SecondaryTestSuite\\SecondaryTestSuite.csproj
-		SccProjectTopLevelParentUniqueName7 = Emtf.sln
-		SccProjectName7 = Tests/SecondaryTestSuite
-		SccLocalPath7 = Tests\\SecondaryTestSuite
-		SccProjectUniqueName8 = Tests\\LoggerTests\\LoggerTests.csproj
-		SccProjectTopLevelParentUniqueName8 = Emtf.sln
-		SccProjectName8 = Tests/LoggerTests
-		SccLocalPath8 = Tests\\LoggerTests
+		SccProjectName5 = Tests/SecondaryTestSuite
+		SccLocalPath5 = Tests\\SecondaryTestSuite
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Emtf.vsmdi
@@ -80,18 +62,10 @@ Global
 		{D6600E4F-9826-40A3-846D-6CA79186C798}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6600E4F-9826-40A3-846D-6CA79186C798}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6600E4F-9826-40A3-846D-6CA79186C798}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65EF8450-60B1-4602-AF90-F4C431814E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65EF8450-60B1-4602-AF90-F4C431814E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65EF8450-60B1-4602-AF90-F4C431814E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65EF8450-60B1-4602-AF90-F4C431814E62}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3DD1634C-9288-42C6-B1AA-66AE61C68598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3DD1634C-9288-42C6-B1AA-66AE61C68598}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DD1634C-9288-42C6-B1AA-66AE61C68598}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DD1634C-9288-42C6-B1AA-66AE61C68598}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7410F6D-F264-4917-96EA-D99EFFD2CB97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7410F6D-F264-4917-96EA-D99EFFD2CB97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7410F6D-F264-4917-96EA-D99EFFD2CB97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7410F6D-F264-4917-96EA-D99EFFD2CB97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38D7B68C-793D-47A7-AA85-F289B7ACB9EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38D7B68C-793D-47A7-AA85-F289B7ACB9EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38D7B68C-793D-47A7-AA85-F289B7ACB9EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -104,22 +78,15 @@ Global
 		{80B5EF88-7A41-4F18-92FD-1AAA083818E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80B5EF88-7A41-4F18-92FD-1AAA083818E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80B5EF88-7A41-4F18-92FD-1AAA083818E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7A329FA-8F0A-43DC-8F24-07364E34E5D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7A329FA-8F0A-43DC-8F24-07364E34E5D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7A329FA-8F0A-43DC-8F24-07364E34E5D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7A329FA-8F0A-43DC-8F24-07364E34E5D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3DD1634C-9288-42C6-B1AA-66AE61C68598} = {71308DC2-A77F-4512-B467-FC831CF5D294}
-		{E7410F6D-F264-4917-96EA-D99EFFD2CB97} = {71308DC2-A77F-4512-B467-FC831CF5D294}
 		{D6600E4F-9826-40A3-846D-6CA79186C798} = {F10BC3F1-62F6-445D-A8DF-2C9CE3385E99}
-		{65EF8450-60B1-4602-AF90-F4C431814E62} = {F10BC3F1-62F6-445D-A8DF-2C9CE3385E99}
 		{38D7B68C-793D-47A7-AA85-F289B7ACB9EF} = {F1DE6FCF-30B8-46FA-B6FC-B6CF2A57DA11}
 		{DEC6C857-DAAA-4262-8AA0-721705A1FFCE} = {F1DE6FCF-30B8-46FA-B6FC-B6CF2A57DA11}
 		{80B5EF88-7A41-4F18-92FD-1AAA083818E5} = {F1DE6FCF-30B8-46FA-B6FC-B6CF2A57DA11}
-		{F7A329FA-8F0A-43DC-8F24-07364E34E5D4} = {F1DE6FCF-30B8-46FA-B6FC-B6CF2A57DA11}
 	EndGlobalSection
 EndGlobal

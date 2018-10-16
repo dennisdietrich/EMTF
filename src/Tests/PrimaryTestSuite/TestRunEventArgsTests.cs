@@ -5,9 +5,7 @@
  *******************************************************/
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PrimaryTestSuite.Extensions;
 using System;
-using System.Reflection;
 
 using EmtfTestRunEventArgs = Emtf.TestRunEventArgs;
 

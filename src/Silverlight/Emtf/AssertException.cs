@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
+using Res = Emtf.Resources.AssertException;
+
 namespace Emtf
 {
     /// <summary>
@@ -54,7 +56,7 @@ namespace Emtf
         /// </remarks>
         [DebuggerHidden]
         public AssertException()
-            : base("An assertion failed.")
+            : base(Res.ctor_Message)
         {
             if (TestExecutor.BreakOnAssertFailure && Debugger.IsAttached)
                 Debugger.Break();
@@ -190,7 +192,6 @@ namespace Emtf
         /// <exception cref="System.ArgumentNullException">
         /// Thrown if <paramref name="info"/> is null.
         /// </exception>
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

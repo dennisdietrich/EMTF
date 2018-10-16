@@ -4,10 +4,10 @@
  * http://www.opensource.org/licenses/ms-pl.html       *
  *******************************************************/
 
+using Emtf.Dynamic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -18,29 +18,22 @@ namespace PrimaryTestSuite
     [TestClass]
     public class TestAbortedExceptionTests
     {
-        private Type         _skipTestExceptionType;
-        private PropertyInfo _userMessagePropertyInfo;
-
-        public TestAbortedExceptionTests()
-        {
-            _skipTestExceptionType   = typeof(EmtfTestRunException).Assembly.GetType("Emtf.TestAbortedException", true, false);
-            _userMessagePropertyInfo = _skipTestExceptionType.GetProperty("UserMessage", BindingFlags.Instance | BindingFlags.NonPublic);
-        }
+        private Type _skipTestExceptionType = typeof(EmtfTestRunException).Assembly.GetType("Emtf.TestAbortedException", true, false);
 
         [TestMethod]
         [Description("Tests the constructor .ctor(String, String) of the TestAbortedException class")]
         public void ctor_String_String()
         {
-            ConstructorInfo ctorInfo = _skipTestExceptionType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { typeof(String), typeof(String) }, null);
+            dynamic factory = WrapperFactory.CreateConstructorWrapper(_skipTestExceptionType);
 
-            EmtfTestRunException tre = (EmtfTestRunException)ctorInfo.Invoke(new object[] { null, null });
+            dynamic tre = WrapperFactory.CreateInstanceWrapper(factory.CreateInstance(null, null));
             Assert.IsNotNull(tre.Message);
-            Assert.IsNull(GetUserMessage(tre));
+            Assert.IsNull(tre.__userMessage);
             Assert.IsNull(tre.InnerException);
 
-            tre = (EmtfTestRunException)ctorInfo.Invoke(new object[] { "Exception.Message", "TestAbortedException.UserMessage" });
+            tre = WrapperFactory.CreateInstanceWrapper(factory.CreateInstance("Exception.Message", "TestAbortedException.UserMessage"));
             Assert.AreEqual("Exception.Message", tre.Message);
-            Assert.AreEqual("TestAbortedException.UserMessage", GetUserMessage(tre));
+            Assert.AreEqual("TestAbortedException.UserMessage", tre.__userMessage);
             Assert.IsNull(tre.InnerException);
         }
 
@@ -48,9 +41,7 @@ namespace PrimaryTestSuite
         [Description("Tests the (de)serialization of a TestAbortedException object")]
         public void Serialization()
         {
-            ConstructorInfo ctorInfo = _skipTestExceptionType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { typeof(String), typeof(String) }, null);
-
-            EmtfTestRunException tre = (EmtfTestRunException)ctorInfo.Invoke(new object[] { "Exception.Message", "TestAbortedException.UserMessage" });
+            EmtfTestRunException tre        = WrapperFactory.CreateConstructorWrapper(_skipTestExceptionType).CreateInstance("Exception.Message", "TestAbortedException.UserMessage");
             BinaryFormatter      serializer = new BinaryFormatter();
 
             using (MemoryStream stream = new MemoryStream())
@@ -60,7 +51,7 @@ namespace PrimaryTestSuite
 
                 tre = (EmtfTestRunException)serializer.Deserialize(stream);
                 Assert.AreEqual("Exception.Message", tre.Message);
-                Assert.AreEqual("TestAbortedException.UserMessage", GetUserMessage(tre));
+                Assert.AreEqual("TestAbortedException.UserMessage", WrapperFactory.CreateInstanceWrapper(tre).__userMessage);
                 Assert.IsNull(tre.InnerException);
             }
         }
@@ -70,14 +61,8 @@ namespace PrimaryTestSuite
         [Description("Verifies that GetObjectData(SerializationInfo, StreamingContext) throws an ArgumentNullException if the first parameter is null")]
         public void GetObjectData_FirstParamNull()
         {
-            ConstructorInfo ctorInfo = _skipTestExceptionType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { typeof(String), typeof(String) }, null);
-            EmtfTestRunException tre = (EmtfTestRunException)ctorInfo.Invoke(new object[] { "Exception.Message", "TestAbortedException.UserMessage" });
+            EmtfTestRunException tre = WrapperFactory.CreateConstructorWrapper(_skipTestExceptionType).CreateInstance("Exception.Message", "TestAbortedException.UserMessage");
             tre.GetObjectData(null, new StreamingContext());
-        }
-
-        private string GetUserMessage(EmtfTestRunException skipTestException)
-        {
-            return (String)_userMessagePropertyInfo.GetValue(skipTestException, null);
         }
     }
 }

@@ -12,6 +12,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading;
 
+using Res = Emtf.Resources.AsyncTestRun;
+
 namespace Emtf
 {
     internal sealed class AsyncTestRun : IAsyncResult, IDisposable
@@ -179,7 +181,7 @@ namespace Emtf
                         _executor.Execute(_assemblies, _groups);
                         break;
                     default:
-                        throw new InvalidOperationException("The parameter type is invalid.");
+                        throw new InvalidOperationException(Res.StartTestRun_InvalidParameterType);
                 }
             }
             catch (Exception e)

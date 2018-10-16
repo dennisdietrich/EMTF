@@ -4,8 +4,8 @@
  * http://www.opensource.org/licenses/ms-pl.html       *
  *******************************************************/
 
+using Emtf.Dynamic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PrimaryTestSuite.Extensions;
 using PrimaryTestSuite.Support;
 using ReflectionTestLibrary;
 using System;
@@ -15,6 +15,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 using EmtfAssert                     = Emtf.Assert;
@@ -43,13 +45,15 @@ namespace PrimaryTestSuite
         #region Public Constants
 
         public const int StandardBlockInterval = 500;
-        public const int MiniStressIterations  = 50000;
+        public const int MiniStressIterations  = 400000;
 
         public const double ThreadTotalTestCountTolerance = 0.03;
 
         #endregion Public Constants
 
         #region Private Fields
+
+        private static Assembly _dynamicAssembly;
 
         private EventHandler<EmtfTestRunEventArgs>          _noopTestRunEventHandler          = delegate { };
         private EventHandler<EmtfTestRunCompletedEventArgs> _noopTestRunCompletedEventHandler = delegate { };
@@ -151,46 +155,46 @@ namespace PrimaryTestSuite
         [Description("Tests the default constructor of the TestExecutor class")]
         public void ctor()
         {
-            EmtfTestExecutor te = new EmtfTestExecutor();
+            dynamic te = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
 
             Assert.IsFalse(te.ConcurrentTestRuns);
             Assert.IsFalse(te.IsRunning);
             Assert.IsFalse(te.MarshalEventHandlerExecution);
             Assert.IsFalse(te.HasSynchronizationContext);
 
-            Assert.IsNotNull(te.GetEventSyncRoot());
-            Assert.IsNotNull(te.GetMethodSyncRoot());
-            Assert.IsFalse(te.GetCancellationRequested());
-            Assert.IsNull(te.GetSyncContext());
+            Assert.IsNotNull(te.__eventSyncRoot);
+            Assert.IsNotNull(te.__methodSyncRoot);
+            Assert.IsFalse(te.__cancellationRequested);
+            Assert.IsNull(te.__syncContext);
         }
 
         [TestMethod]
         [Description("Tests the constructor .ctor(Boolean, Boolean) of the TestExecutor class")]
         public void ctor_Boolean_Boolean()
         {
-            EmtfTestExecutor te = new EmtfTestExecutor(false, false);
+            dynamic te = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor(false, false));
 
             Assert.IsFalse(te.ConcurrentTestRuns);
             Assert.IsFalse(te.IsRunning);
             Assert.IsFalse(te.MarshalEventHandlerExecution);
             Assert.IsFalse(te.HasSynchronizationContext);
 
-            Assert.IsNotNull(te.GetEventSyncRoot());
-            Assert.IsNotNull(te.GetMethodSyncRoot());
-            Assert.IsFalse(te.GetCancellationRequested());
-            Assert.IsNull(te.GetSyncContext());
+            Assert.IsNotNull(te.__eventSyncRoot);
+            Assert.IsNotNull(te.__methodSyncRoot);
+            Assert.IsFalse(te.__cancellationRequested);
+            Assert.IsNull(te.__syncContext);
 
-            te = new EmtfTestExecutor(false, true);
+            te = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor(false, true));
 
             Assert.IsTrue(te.ConcurrentTestRuns);
             Assert.IsFalse(te.IsRunning);
             Assert.IsFalse(te.MarshalEventHandlerExecution);
             Assert.IsFalse(te.HasSynchronizationContext);
 
-            Assert.IsNotNull(te.GetEventSyncRoot());
-            Assert.IsNotNull(te.GetMethodSyncRoot());
-            Assert.IsFalse(te.GetCancellationRequested());
-            Assert.IsNull(te.GetSyncContext());
+            Assert.IsNotNull(te.__eventSyncRoot);
+            Assert.IsNotNull(te.__methodSyncRoot);
+            Assert.IsFalse(te.__cancellationRequested);
+            Assert.IsNull(te.__syncContext);
         }
 
         [TestMethod]
@@ -205,12 +209,12 @@ namespace PrimaryTestSuite
         [Description("Tests the add and remove methods for the TestRunStarted event of the TestExecutor")]
         public void TestRunStarted()
         {
-            EmtfTestExecutor te = new EmtfTestExecutor();
+            dynamic te = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             TestAddAndRemoveMethods(
                 () => te.TestRunStarted += _noopTestRunEventHandler,
                 () => te.TestRunStarted -= _noopTestRunEventHandler,
-                () => te.GetEventSyncRoot(),
-                () => te.GetTestRunStarted(),
+                () => te.__eventSyncRoot,
+                () => te.__testRunStarted,
                 _noopTestRunEventHandler);
         }
 
@@ -218,12 +222,12 @@ namespace PrimaryTestSuite
         [Description("Tests the add and remove methods for the TestRunCompleted event of the TestExecutor")]
         public void TestRunCompleted()
         {
-            EmtfTestExecutor te = new EmtfTestExecutor();
+            dynamic te = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             TestAddAndRemoveMethods(
                 () => te.TestRunCompleted += _noopTestRunCompletedEventHandler,
                 () => te.TestRunCompleted -= _noopTestRunCompletedEventHandler,
-                () => te.GetEventSyncRoot(),
-                () => te.GetTestRunCompleted(),
+                () => te.__eventSyncRoot,
+                () => te.__testRunCompleted,
                 _noopTestRunCompletedEventHandler);
         }
 
@@ -231,12 +235,12 @@ namespace PrimaryTestSuite
         [Description("Tests the add and remove methods for the TestStarted event of the TestExecutor")]
         public void TestStarted()
         {
-            EmtfTestExecutor te = new EmtfTestExecutor();
+            dynamic te = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             TestAddAndRemoveMethods(
                 () => te.TestStarted += _noopTestEventHandler,
                 () => te.TestStarted -= _noopTestEventHandler,
-                () => te.GetEventSyncRoot(),
-                () => te.GetTestStarted(),
+                () => te.__eventSyncRoot,
+                () => te.__testStarted,
                 _noopTestEventHandler);
         }
 
@@ -244,12 +248,12 @@ namespace PrimaryTestSuite
         [Description("Tests the add and remove methods for the TestCompleted event of the TestExecutor")]
         public void TestCompleted()
         {
-            EmtfTestExecutor te = new EmtfTestExecutor();
+            dynamic te = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             TestAddAndRemoveMethods(
                 () => te.TestCompleted += _noopTestCompetedEventHandler,
                 () => te.TestCompleted -= _noopTestCompetedEventHandler,
-                () => te.GetEventSyncRoot(),
-                () => te.GetTestCompleted(),
+                () => te.__eventSyncRoot,
+                () => te.__testCompleted,
                 _noopTestCompetedEventHandler);
         }
 
@@ -257,12 +261,12 @@ namespace PrimaryTestSuite
         [Description("Tests the add and remove methods for the TestSkipped event of the TestExecutor")]
         public void TestSkipped()
         {
-            EmtfTestExecutor te = new EmtfTestExecutor();
+            dynamic te = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             TestAddAndRemoveMethods(
                 () => te.TestSkipped += _noopTestSkippedEventHandler,
                 () => te.TestSkipped -= _noopTestSkippedEventHandler,
-                () => te.GetEventSyncRoot(),
-                () => te.GetTestSkipped(),
+                () => te.__eventSyncRoot,
+                () => te.__testSkipped,
                 _noopTestSkippedEventHandler);
         }
 
@@ -270,10 +274,11 @@ namespace PrimaryTestSuite
         [Description("Tests the IsTestMethodValid(MethodInfo, String) method of the TestExecutor class with non public methods")]
         public void IsTestMethodValid_NonPublic()
         {
-            EmtfTestExecutor               te            = new EmtfTestExecutor();
+            dynamic                        te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.NonPublic_Internal_MethodInfo,
                                                                null,
                                                                "The test method is not public.",
@@ -282,8 +287,8 @@ namespace PrimaryTestSuite
             Assert.IsFalse(te.IsTestMethodValid(InvalidMethods.NonPublic_Internal_MethodInfo, null));
             Assert.AreEqual(1, eventArgsList.Count);
 
-            te.SetTestSkipped(null);
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.__testSkipped = null;
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.NonPublic_Protected_MethodInfo,
                                                                String.Empty,
                                                                "The test method is not public.",
@@ -293,8 +298,8 @@ namespace PrimaryTestSuite
             Assert.IsFalse(te.IsTestMethodValid(InvalidMethods.NonPublic_Protected_MethodInfo, String.Empty));
             Assert.AreEqual(2, eventArgsList.Count);
 
-            te.SetTestSkipped(null);
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.__testSkipped = null;
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.NonPublic_Private_MethodInfo,
                                                                "Test Description",
                                                                "The test method is not public.",
@@ -309,10 +314,11 @@ namespace PrimaryTestSuite
         [Description("Tests the IsTestMethodValid(MethodInfo, String) method of the TestExecutor class with a static method")]
         public void IsTestMethodValid_Static()
         {
-            EmtfTestExecutor               te            = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.Static_MethodInfo,
                                                                String.Empty,
                                                                "The test method is static.",
@@ -327,10 +333,11 @@ namespace PrimaryTestSuite
         [Description("Tests the IsTestMethodValid(MethodInfo, String) method of the TestExecutor class with an abstract method")]
         public void IsTestMethodValid_Abstract()
         {
-            EmtfTestExecutor               te            = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(AbstractMethods.Abstract_MethodInfo,
                                                                String.Empty,
                                                                "The test method is abstract.",
@@ -345,10 +352,11 @@ namespace PrimaryTestSuite
         [Description("Tests the IsTestMethodValid(MethodInfo, String) method of the TestExecutor class with test methods that have a PreTestActionAttribute defined")]
         public void IsTestMethodValid_DefinesPreTestAction()
         {
-            EmtfTestExecutor               te            = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.PreTestActionDefined_MethodInfo,
                                                                String.Empty,
                                                                "The test method is marked as a pre or post test action.",
@@ -358,10 +366,10 @@ namespace PrimaryTestSuite
             Assert.IsFalse(te.IsTestMethodValid(InvalidMethods.PreTestActionDefined_MethodInfo, String.Empty));
             Assert.AreEqual(1, eventArgsList.Count);
 
-            te            = new EmtfTestExecutor();
+            te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             eventArgsList = new List<EmtfTestSkippedEventArgs>();
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.PreTestActionDefined_WithTestContext_MethodInfo,
                                                                String.Empty,
                                                                "The test method is marked as a pre or post test action.",
@@ -376,10 +384,11 @@ namespace PrimaryTestSuite
         [Description("Tests the IsTestMethodValid(MethodInfo, String) method of the TestExecutor class with test methods that have a PostTestActionAttribute defined")]
         public void IsTestMethodValid_DefinesPostTestAction()
         {
-            EmtfTestExecutor               te            = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.PostTestActionDefined_MethodInfo,
                                                                String.Empty,
                                                                "The test method is marked as a pre or post test action.",
@@ -389,10 +398,10 @@ namespace PrimaryTestSuite
             Assert.IsFalse(te.IsTestMethodValid(InvalidMethods.PostTestActionDefined_MethodInfo, String.Empty));
             Assert.AreEqual(1, eventArgsList.Count);
 
-            te            = new EmtfTestExecutor();
+            te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             eventArgsList = new List<EmtfTestSkippedEventArgs>();
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.PostTestActionDefined_WithTestContext_MethodInfo,
                                                                String.Empty,
                                                                "The test method is marked as a pre or post test action.",
@@ -407,10 +416,11 @@ namespace PrimaryTestSuite
         [Description("Tests the IsTestMethodValid(MethodInfo, String) method of the TestExecutor class with a generic method definition")]
         public void IsTestMethodValid_Generic()
         {
-            EmtfTestExecutor               te            = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.Generic_MethodInfo,
                                                                String.Empty,
                                                                "The test method is a generic method definition or open constructed method.",
@@ -425,10 +435,11 @@ namespace PrimaryTestSuite
         [Description("Tests the IsTestMethodValid(MethodInfo, String) method of the TestExecutor class with a non-void returning method")]
         public void IsTestMethodValid_InvalidReturnType()
         {
-            EmtfTestExecutor               te            = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.ReturnsObject_MethodInfo,
                                                                String.Empty,
                                                                "The return type of the test method is not System.Void.",
@@ -443,10 +454,11 @@ namespace PrimaryTestSuite
         [Description("Tests the IsTestMethodValid(MethodInfo, String) method of the TestExecutor class with methods with invalid signatures")]
         public void IsTestMethodValid_HasParameter()
         {
-            EmtfTestExecutor               te            = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.Param_Object_MethodInfo,
                                                                String.Empty,
                                                                "The test method has more than one parameter or one parameter which is not of the type Emtf.TestContext.",
@@ -456,10 +468,10 @@ namespace PrimaryTestSuite
             Assert.IsFalse(te.IsTestMethodValid(InvalidMethods.Param_Object_MethodInfo, String.Empty));
             Assert.AreEqual(1, eventArgsList.Count);
 
-            te            = new EmtfTestExecutor();
+            te            = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             eventArgsList = new List<EmtfTestSkippedEventArgs>();
 
-            te.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            te.TestSkipped += eventHandler;
             te.TestSkipped += GetTestSkippedEventArgsValidator(InvalidMethods.Param_Object_Object_MethodInfo,
                                                                String.Empty,
                                                                "The test method has more than one parameter or one parameter which is not of the type Emtf.TestContext.",
@@ -474,10 +486,11 @@ namespace PrimaryTestSuite
         [Description("Tests the IsTestMethodValid(MethodInfo, String) method of the TestExecutor class with valid methods")]
         public void IsTestMethodValid_Valid()
         {
-            EmtfTestExecutor               testExecutor  = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                testExecutor  = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            testExecutor.TestSkipped += eventHandler;
 
             Assert.IsTrue(testExecutor.IsTestMethodValid(ValidMethods.NoParams_Void_MethodInfo, String.Empty));
             Assert.AreEqual(0, eventArgsList.Count);
@@ -543,10 +556,11 @@ namespace PrimaryTestSuite
             Object expected = new Object();
             Object actual   = null;
 
-            EmtfTestExecutor               testExecutor  = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                testExecutor  = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            testExecutor.TestSkipped += eventHandler;
             testExecutor.TestSkipped += GetTestSkippedEventArgsValidator(InvalidTypes.Struct.NoOpMethodInfo,
                                                                          String.Empty,
                                                                          String.Format(CultureInfo.CurrentCulture,
@@ -562,8 +576,8 @@ namespace PrimaryTestSuite
             MethodInfo interfaceNoOp = typeof(InvalidTypes.Interface).GetMethod("NoOp");
             actual = expected;
 
-            testExecutor.SetTestSkipped(null);
-            testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            testExecutor.__testSkipped = null;
+            testExecutor.TestSkipped += eventHandler;
             testExecutor.TestSkipped += GetTestSkippedEventArgsValidator(interfaceNoOp,
                                                                          "Test Description",
                                                                          String.Format(CultureInfo.CurrentCulture,
@@ -585,10 +599,11 @@ namespace PrimaryTestSuite
             Object     expected = new Object();
             Object     actual   = null;
 
-            EmtfTestExecutor               testExecutor  = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                testExecutor  = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            testExecutor.TestSkipped += eventHandler;
             testExecutor.TestSkipped += GetTestSkippedEventArgsValidator(noOp,
                                                                          String.Empty,
                                                                          String.Format(CultureInfo.CurrentCulture,
@@ -615,10 +630,11 @@ namespace PrimaryTestSuite
             Object expected = new Object();
             Object actual   = null;
 
-            EmtfTestExecutor               testExecutor  = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                testExecutor  = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            testExecutor.TestSkipped += eventHandler;
             testExecutor.TestSkipped += GetTestSkippedEventArgsValidator(InvalidTypes.Abstract.NoOpMethodInfo,
                                                                          String.Empty,
                                                                          String.Format(CultureInfo.CurrentCulture,
@@ -650,15 +666,16 @@ namespace PrimaryTestSuite
             Object expected    = new Object();
             Object actual;
 
-            EmtfTestExecutor               testExecutor  = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                testExecutor  = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
             foreach (MethodInfo method in noOpMethods)
             {
-                testExecutor.SetTestSkipped(null);
+                testExecutor.__testSkipped = null;
                 actual = null;
 
-                testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+                testExecutor.TestSkipped += eventHandler;
                 testExecutor.TestSkipped += GetTestSkippedEventArgsValidator(method,
                                                                              String.Empty,
                                                                              String.Format(CultureInfo.CurrentCulture,
@@ -686,10 +703,11 @@ namespace PrimaryTestSuite
             Object expected = new Object();
             Object actual   = null;
 
-            EmtfTestExecutor               testExecutor  = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                testExecutor  = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            testExecutor.TestSkipped += eventHandler;
             testExecutor.TestSkipped += GetTestSkippedEventArgsValidator(InvalidTypes.NonPublicDefaultConstructor.NoOpMethodInfo,
                                                                          String.Empty,
                                                                          String.Format(CultureInfo.CurrentCulture,
@@ -704,8 +722,8 @@ namespace PrimaryTestSuite
 
             actual = expected;
 
-            testExecutor.SetTestSkipped(null);
-            testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            testExecutor.__testSkipped = null;
+            testExecutor.TestSkipped += eventHandler;
             testExecutor.TestSkipped += GetTestSkippedEventArgsValidator(InvalidTypes.NoDefaultConstructor.NoOpMethodInfo,
                                                                          "Test Description",
                                                                          String.Format(CultureInfo.CurrentCulture,
@@ -726,10 +744,11 @@ namespace PrimaryTestSuite
             Object expected = new Object();
             Object actual   = null;
 
-            EmtfTestExecutor               testExecutor  = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                testExecutor  = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            testExecutor.TestSkipped += eventHandler;
             testExecutor.TestSkipped += GetTestSkippedEventArgsValidator(InvalidTypes.ConstructorThrows.NoOpMethodInfo,
                                                                          String.Empty,
                                                                          String.Format(CultureInfo.CurrentCulture,
@@ -754,10 +773,11 @@ namespace PrimaryTestSuite
         [Description("Tests the TryUpdateTestClassInstance(MethodInfo, String, ref Object) method of the TestExecutor class")]
         public void TryUpdateTestClassInstance()
         {
-            EmtfTestExecutor               testExecutor  = new EmtfTestExecutor();
-            List<EmtfTestSkippedEventArgs> eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            dynamic                                testExecutor  = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            List<EmtfTestSkippedEventArgs>         eventArgsList = new List<EmtfTestSkippedEventArgs>();
+            EventHandler<EmtfTestSkippedEventArgs> eventHandler  = (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
 
-            testExecutor.TestSkipped += (Object sender, EmtfTestSkippedEventArgs e) => eventArgsList.Add(e);
+            testExecutor.TestSkipped += eventHandler;
 
             MethodInfo disposableMock_NoOp = typeof(DisposableMock).GetMethod("NoOp");
             MethodInfo validMethods_NoOp   = typeof(ValidMethods).GetMethod("NoParams_Void");
@@ -798,7 +818,6 @@ namespace PrimaryTestSuite
             Assert.IsTrue(mock.HasBeenDisposed);
         }
 
-
         [TestMethod]
         [Description("Tests the FindTestMethod(IEnumerable<Assembly>) method of the TestExecutor class")]
         public void FindTestMethods()
@@ -811,6 +830,9 @@ namespace PrimaryTestSuite
             Assert.AreEqual(typeof(ValidTestClass), result[0].ReflectedType);
             Assert.AreEqual("ValidTestWithTestContext", result[1].Name);
             Assert.AreEqual(typeof(ValidTestClass), result[1].ReflectedType);
+
+            result = (Collection<MethodInfo>)findTests.Invoke(null, new object[] { new Collection<Assembly> { GetDynamicAssembly() } });
+            Assert.AreEqual(0, result.Count);
         }
 
         [TestMethod]
@@ -952,36 +974,36 @@ namespace PrimaryTestSuite
         [Description("Verifies that the PrepareSyncTestRun() method of the TestExecutor class synchronizes access to the fields it's using")]
         public void PrepareSyncTestRun_Sync()
         {
-            EmtfTestExecutor testExecutor = new EmtfTestExecutor();
-            testExecutor.SetCancellationRequested(true);
+            dynamic testExecutor = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            testExecutor.__cancellationRequested = true;
 
             Assert.IsFalse(testExecutor.IsRunning);
-            Assert.IsFalse(testExecutor.GetActiveTestRun());
-            Assert.IsTrue(testExecutor.GetCancellationRequested());
+            Assert.IsFalse(testExecutor.__activeTestRun);
+            Assert.IsTrue(testExecutor.__cancellationRequested);
 
-            Thread blockingThread = HoldLockAndExecute(testExecutor.GetMethodSyncRoot(),
+            Thread blockingThread = HoldLockAndExecute(testExecutor.__methodSyncRoot,
                                                        StandardBlockInterval,
-                                                       () => testExecutor.PrepareTestRun());
+                                                       (ThreadStart)(() => testExecutor.PrepareTestRun()));
             Thread.Sleep(StandardBlockInterval / 2);
-            Assert.IsFalse(testExecutor.GetActiveTestRun());
-            Assert.IsTrue(testExecutor.GetCancellationRequested());
+            Assert.IsFalse(testExecutor.__activeTestRun);
+            Assert.IsTrue(testExecutor.__cancellationRequested);
 
             blockingThread.Join();
             Assert.IsTrue(testExecutor.IsRunning);
-            Assert.IsTrue(testExecutor.GetActiveTestRun());
-            Assert.IsFalse(testExecutor.GetCancellationRequested());
+            Assert.IsTrue(testExecutor.__activeTestRun);
+            Assert.IsFalse(testExecutor.__cancellationRequested);
         }
 
         [TestMethod]
         [Description("Verifies that the PrepareSyncTestRun() method of the TestExecutor class throws an exception if a test run is in progress")]
         public void PrepareSyncTestRun_RunInProgress()
         {
-            EmtfTestExecutor testExecutor = new EmtfTestExecutor();
-            testExecutor.SetActiveTestRun(true);
+            dynamic testExecutor = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            testExecutor.__activeTestRun = true;
 
-            TargetInvocationException e = ExceptionTesting.CatchException<TargetInvocationException>(() => testExecutor.PrepareTestRun());
+            InvalidOperationException e = ExceptionTesting.CatchException<InvalidOperationException>(() => testExecutor.PrepareTestRun());
             Assert.IsNotNull(e);
-            Assert.IsInstanceOfType(e.InnerException, typeof(InvalidOperationException));
+            Assert.IsNull(e.InnerException);
         }
 
         [TestMethod]
@@ -1176,13 +1198,13 @@ namespace PrimaryTestSuite
         [Description("Verifies that the ExecuteImpl(IEnumerable<MethodInfo>, IList<String>) method of the TestExecutor class disposes the class test class instance")]
         public void ExecuteImpl_DisposeTestObject()
         {
-            EmtfTestExecutor testExecutor = new EmtfTestExecutor();
+            dynamic testExecutor = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
             testExecutor.ExecuteImpl(new Collection<MethodInfo> { typeof(StaticDisposableMock).GetMethod("NoOp") }, null);
             Assert.IsTrue(StaticDisposableMock.HasBeenDisposed);
 
-            testExecutor = new EmtfTestExecutor();
-            testExecutor.TestCompleted += delegate { throw new Exception(); };
-            TargetInvocationException e = ExceptionTesting.CatchException<TargetInvocationException>(() => testExecutor.ExecuteImpl(new Collection<MethodInfo> { typeof(StaticDisposableMock).GetMethod("NoOp") }, null));
+            testExecutor = WrapperFactory.CreateInstanceWrapper(new EmtfTestExecutor());
+            testExecutor.TestCompleted += (EventHandler<EmtfTestCompletedEventArgs>)(delegate { throw new Exception(); });
+            Exception e = ExceptionTesting.CatchException<Exception>(() => testExecutor.ExecuteImpl(new Collection<MethodInfo> { typeof(StaticDisposableMock).GetMethod("NoOp") }, null));
             Assert.IsNotNull(e);
             Assert.IsTrue(StaticDisposableMock.HasBeenDisposed);
         }
@@ -1693,7 +1715,7 @@ namespace PrimaryTestSuite
                                 Assert.AreEqual("PrimaryTestSuite.TestExecutorTests+TestMethods.ThrowingTest", ((EmtfTestCompletedEventArgs)eventData[2].EventArgs).FullTestName);
                                 Assert.IsNull(((EmtfTestCompletedEventArgs)eventData[2].EventArgs).TestDescription);
                                 Assert.AreEqual(String.Format(CultureInfo.CurrentCulture,
-                                                              "An exception of the type '{0}' occurred during the execution of the test.",
+                                                              "An unhandled exception of the type '{0}' occurred during the execution of the test.",
                                                               typeof(NotImplementedException).FullName),
                                                 ((EmtfTestCompletedEventArgs)eventData[2].EventArgs).Message);
                                 Assert.IsNull(((EmtfTestCompletedEventArgs)eventData[2].EventArgs).UserMessage);
@@ -1720,7 +1742,7 @@ namespace PrimaryTestSuite
                                 Assert.AreEqual("PrimaryTestSuite.TestExecutorTests+TestMethods.ThrowingTestWithDescription", ((EmtfTestCompletedEventArgs)eventData[2].EventArgs).FullTestName);
                                 Assert.AreEqual("Description", ((EmtfTestEventArgs)eventData[2].EventArgs).TestDescription);
                                 Assert.AreEqual(String.Format(CultureInfo.CurrentCulture,
-                                                              "An exception of the type '{0}' occurred during the execution of the test.",
+                                                              "An unhandled exception of the type '{0}' occurred during the execution of the test.",
                                                               typeof(NotImplementedException).FullName),
                                                 ((EmtfTestCompletedEventArgs)eventData[2].EventArgs).Message);
                                 Assert.IsNull(((EmtfTestCompletedEventArgs)eventData[2].EventArgs).UserMessage);
@@ -2670,10 +2692,11 @@ namespace PrimaryTestSuite
 
         private void TestExecuteImpl(EmtfTestExecutor executor, IEnumerable<MethodInfo> testMethods, int expectedEventCount, Action<EmtfTestRunEventArgs> testRunStartedEventArgsVerifier, Action<Collection<EventData>> eventDataVerifier, Action<EmtfTestRunCompletedEventArgs> testRunCompletedEventArgsVerifier)
         {
+            dynamic executorWrapper = WrapperFactory.CreateInstanceWrapper(executor);
             Collection<EventData> eventData = new Collection<EventData>();
 
             SetupEventRecording(executor, eventData);
-            executor.ExecuteImpl(testMethods, null);
+            executorWrapper.ExecuteImpl(testMethods, null);
             Assert.AreEqual(expectedEventCount, eventData.Count);
 
             Assert.AreEqual("TestRunStarted", eventData[0].Name);
@@ -2697,7 +2720,7 @@ namespace PrimaryTestSuite
 
             Collection<EventData>      events      = new Collection<EventData>();
             MockSynchronizationContext syncContext = new MockSynchronizationContext();
-            executor.SetSyncContext(syncContext);
+            WrapperFactory.CreateInstanceWrapper(executor).__syncContext = syncContext;
 
             EventHandler<T> handler = delegate(object sender, T e)
             {
@@ -2741,9 +2764,9 @@ namespace PrimaryTestSuite
             targetMethod.Invoke(executor, new object[] { null });
             targetEvent.AddEventHandler(executor, handler);
 
-            Thread blockingThread = HoldLockAndExecute(executor.GetEventSyncRoot(),
+            Thread blockingThread = HoldLockAndExecute(WrapperFactory.CreateInstanceWrapper(executor).__eventSyncRoot,
                                                        StandardBlockInterval,
-                                                       () => targetMethod.Invoke(executor, new object[] { sourceEventArgs }));
+                                                       (ThreadStart)(() => targetMethod.Invoke(executor, new object[] { sourceEventArgs })));
             Thread.Sleep(StandardBlockInterval / 2);
             Assert.AreEqual(0, events.Count);
 
@@ -2830,12 +2853,14 @@ namespace PrimaryTestSuite
 
         private static void ClearEventHandlers(EmtfTestExecutor executor)
         {
-            executor.SetTestRunStarted(null);
-            executor.SetTestRunCompleted(null);
+            dynamic wrapper = WrapperFactory.CreateInstanceWrapper(executor);
 
-            executor.SetTestStarted(null);
-            executor.SetTestCompleted(null);
-            executor.SetTestSkipped(null);
+            wrapper.__testRunStarted   = null;
+            wrapper.__testRunCompleted = null;
+
+            wrapper.__testStarted   = null;
+            wrapper.__testCompleted = null;
+            wrapper.__testSkipped   = null;
         }
 
         private static void RegisterStaticEventValidators(EmtfTestExecutor executor)
@@ -2866,6 +2891,24 @@ namespace PrimaryTestSuite
             Assert.AreEqual("TestRunCompleted", eventData[eventData.Count - 1].Name);
             Assert.AreEqual(expectedTests.Count, ((EmtfTestRunCompletedEventArgs)eventData[eventData.Count - 1].EventArgs).Total);
             Assert.IsTrue(((EmtfTestRunCompletedEventArgs)eventData[eventData.Count - 1].EventArgs).StartTime < ((EmtfTestRunCompletedEventArgs)eventData[eventData.Count - 1].EventArgs).EndTime);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        private static Assembly GetDynamicAssembly()
+        {
+            if (_dynamicAssembly == null)
+            {
+                AssemblyBuilder assembly  = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("PrimaryTestSuite.TestExecutorTests.DynamicAssembly"), AssemblyBuilderAccess.Run);
+                ModuleBuilder   module    = assembly.DefineDynamicModule("PrimaryTestSuite.TestExecutorTests.DynamicAssembly");
+                TypeBuilder     type      = module.DefineType("PrimaryTestSuite.TestExecutorTests.DynamicAssembly.DynamicType", TypeAttributes.Public | TypeAttributes.AutoLayout | TypeAttributes.AnsiClass | TypeAttributes.Sealed);
+                MethodBuilder   method    = type.DefineMethod("Method", MethodAttributes.Public | MethodAttributes.HideBySig, CallingConventions.HasThis);
+                ILGenerator     generator = method.GetILGenerator();
+
+                generator.Emit(OpCodes.Ret);
+                _dynamicAssembly = type.CreateType().Assembly;
+            }
+
+            return _dynamicAssembly;
         }
 
         #endregion Private Methods

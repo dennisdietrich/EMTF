@@ -32,7 +32,7 @@ namespace PrimaryTestSuite
             _skipTestExceptionType             = typeof(EmtfTestContext).Assembly.GetType("Emtf.TestAbortedException", true, false);
             _userMessagePropertyInfo           = _skipTestExceptionType.GetProperty("UserMessage", BindingFlags.Instance | BindingFlags.NonPublic);
             _testContextConstructorInfo        = typeof(EmtfTestContext).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { logEntryCollectionType }, null);
-            _logEntryCollectionConstructorInfo = logEntryCollectionType.GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[0], null);
+            _logEntryCollectionConstructorInfo = logEntryCollectionType.GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, Type.EmptyTypes, null);
             _createUserLogMethodInfo           = logEntryType.GetMethod("CreateUserLog", BindingFlags.Static | BindingFlags.NonPublic);
         }
 

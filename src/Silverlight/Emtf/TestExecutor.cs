@@ -15,6 +15,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
+using Res = Emtf.Resources.TestExecutor;
+
 namespace Emtf
 {
     /// <summary>
@@ -212,7 +214,7 @@ namespace Emtf
                     if (_activeTestRun)
                     {
                         if (_concurrentTestRuns != value)
-                            throw new InvalidOperationException("Cannot (de)active concurrent test runs while a test run is in progress.");
+                            throw new InvalidOperationException(Res.ConcurrentTestRuns_InvalidOperation);
                         else
                             return;
                     }
@@ -261,7 +263,7 @@ namespace Emtf
             set
             {
                 if (value == true && _syncContext == null)
-                    throw new InvalidOperationException("Event handler execution cannot be marshaled since the test executor was created on a thread without a synchronization context.");
+                    throw new InvalidOperationException(Res.MarshalEventHandlerExecution_NoSynchronizationContext);
 
                 _marshalEventHandlerExecution = value;
             }
@@ -288,14 +290,14 @@ namespace Emtf
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the TestExecutor class.
+        /// Creates a new instance of the <see cref="TestExecutor"/> class.
         /// </summary>
         public TestExecutor()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of the TestExecutor class.
+        /// Creates a new instance of the <see cref="TestExecutor"/> class.
         /// </summary>
         /// <param name="marshalEventHandler">
         /// Indicates whether or not event handler invocations will be marshaled using the
@@ -408,6 +410,7 @@ namespace Emtf
         /// with the <see cref="TestAttribute"/> and a declared or derived member of a public,
         /// non-abstract class marked with the <see cref="TestClassAttribute"/>.
         /// </remarks>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "AsyncTestRun instances are disposed in EndExecute(IAsyncResult)")]
         public IAsyncResult BeginExecute(IList<String> groups, AsyncCallback callback, Object state)
         {
             AsyncTestRun testRun = new AsyncTestRun(this, groups, callback, state);
@@ -513,6 +516,7 @@ namespace Emtf
         /// with the <see cref="TestAttribute"/> and a declared or derived member of a public,
         /// non-abstract class marked with the <see cref="TestClassAttribute"/>.
         /// </remarks>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "AsyncTestRun instances are disposed in EndExecute(IAsyncResult)")]
         public IAsyncResult BeginExecute(IEnumerable<Assembly> assemblies, IList<String> groups, AsyncCallback callback, Object state)
         {
             if (assemblies == null)
@@ -616,6 +620,7 @@ namespace Emtf
         /// Tests must be public, non-abstract, <see cref="System.Void"/> returning methods without
         /// parameters.
         /// </remarks>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "AsyncTestRun instances are disposed in EndExecute(IAsyncResult)")]
         public IAsyncResult BeginExecute(IEnumerable<MethodInfo> testMethods, IList<String> groups, AsyncCallback callback, Object state)
         {
             if (testMethods == null)
@@ -673,7 +678,7 @@ namespace Emtf
             }
 
             if (testRun == null)
-                throw new InvalidOperationException("The asynchronous result object was not returned by one of the BeginExecute() methods or EndExecute() has already been called.");
+                throw new InvalidOperationException(Res.EndExecute_InvalidOperation);
 
             if (!testRun.IsCompleted)
                 testRun.AsyncWaitHandle.WaitOne();
@@ -693,7 +698,7 @@ namespace Emtf
             lock (_methodSyncRoot)
             {
                 if (IsRunning)
-                    throw new InvalidOperationException("A test run is already in progress.");
+                    throw new InvalidOperationException(Res.PrepareTestRun_InvalidOperation);
 
                 _activeTestRun         = true;
                 _cancellationRequested = false;
@@ -733,7 +738,7 @@ namespace Emtf
                     Thread      thread = new Thread(TestRunThread);
                     TestRunData data   = new TestRunData(testMethodQueue, thread, syncRoot);
 
-                    thread.Name = String.Format(CultureInfo.CurrentCulture, "EMTF Concurrent Test Run Thread {0}", i);
+                    thread.Name = String.Format(CultureInfo.CurrentCulture, Res.ExecuteImpl_TestRunThreadName, i);
                     thread.Start(data);
 
                     testRunData[i] = data;
@@ -900,7 +905,7 @@ namespace Emtf
                             OnTestCompleted(new TestCompletedEventArgs(testMethod,
                                                                        testDescription,
                                                                        String.Format(CultureInfo.CurrentCulture,
-                                                                                     "An exception of the type '{0}' occurred during the execution of the test.",
+                                                                                     Res.TestRunThread_TestFailedWithException,
                                                                                      e.GetType().FullName),
                                                                        null,
                                                                        TestContext.LogEntry.CreateUserLog(logEntries, true),
@@ -915,7 +920,7 @@ namespace Emtf
 
                         OnTestCompleted(new TestCompletedEventArgs(testMethod,
                                                                    testDescription,
-                                                                   "Test passed.",
+                                                                   Res.TestRunThread_TestPassed,
                                                                    null,
                                                                    TestContext.LogEntry.CreateUserLog(logEntries, false),
                                                                    TestResult.Passed,
@@ -969,7 +974,7 @@ namespace Emtf
             {
                 OnTestSkipped(new TestSkippedEventArgs(method,
                                                        testDescription,
-                                                       "The test method is not public.",
+                                                       Res.IsTestMethodValid_NotPublic,
                                                        SkipReason.MethodNotSupported,
                                                        null,
                                                        DateTime.Now,
@@ -981,7 +986,7 @@ namespace Emtf
             {
                 OnTestSkipped(new TestSkippedEventArgs(method,
                                                        testDescription,
-                                                       "The test method is static.",
+                                                       Res.IsTestMethodValid_IsStatic,
                                                        SkipReason.MethodNotSupported,
                                                        null,
                                                        DateTime.Now,
@@ -993,7 +998,7 @@ namespace Emtf
             {
                 OnTestSkipped(new TestSkippedEventArgs(method,
                                                        testDescription,
-                                                       "The test method is abstract.",
+                                                       Res.IsTestMethodValid_IsAbstract,
                                                        SkipReason.MethodNotSupported,
                                                        null,
                                                        DateTime.Now,
@@ -1005,7 +1010,7 @@ namespace Emtf
             {
                 OnTestSkipped(new TestSkippedEventArgs(method,
                                                        testDescription,
-                                                       "The test method is a generic method definition or open constructed method.",
+                                                       Res.IsTestMethodValid_ContainsGenericParameters,
                                                        SkipReason.MethodNotSupported,
                                                        null,
                                                        DateTime.Now,
@@ -1017,7 +1022,7 @@ namespace Emtf
             {
                 OnTestSkipped(new TestSkippedEventArgs(method,
                                                        testDescription,
-                                                       "The return type of the test method is not System.Void.",
+                                                       Res.IsTestMethodValid_ReturnTypeNotVoid,
                                                        SkipReason.MethodNotSupported,
                                                        null,
                                                        DateTime.Now,
@@ -1030,7 +1035,7 @@ namespace Emtf
             {
                 OnTestSkipped(new TestSkippedEventArgs(method,
                                                        testDescription,
-                                                       "The test method has more than one parameter or one parameter which is not of the type Emtf.TestContext.",
+                                                       Res.IsTestMethodValid_InvalidSignature,
                                                        SkipReason.MethodNotSupported,
                                                        null,
                                                        DateTime.Now,
@@ -1038,23 +1043,11 @@ namespace Emtf
                 return false;
             }
 
-            if (method.IsDefined(typeof(PreTestActionAttribute), true))
+            if (method.IsDefined(typeof(PreTestActionAttribute), true) || method.IsDefined(typeof(PostTestActionAttribute), true))
             {
                 OnTestSkipped(new TestSkippedEventArgs(method,
                                                        testDescription,
-                                                       "The test method is marked as a pre or post test action.",
-                                                       SkipReason.TestActionAttributeDefined,
-                                                       null,
-                                                       DateTime.Now,
-                                                       _concurrentTestRuns));
-                return false;
-            }
-
-            if (method.IsDefined(typeof(PostTestActionAttribute), true))
-            {
-                OnTestSkipped(new TestSkippedEventArgs(method,
-                                                       testDescription,
-                                                       "The test method is marked as a pre or post test action.",
+                                                       Res.IsTestMethodValid_IsPreOrPostTestAction,
                                                        SkipReason.TestActionAttributeDefined,
                                                        null,
                                                        DateTime.Now,
@@ -1078,7 +1071,7 @@ namespace Emtf
                     OnTestSkipped(new TestSkippedEventArgs(testMethod,
                                                            testDescription,
                                                            String.Format(CultureInfo.CurrentCulture,
-                                                                         "The type '{0}' is not a class.",
+                                                                         Res.TryUpdateTestClassInstance_IsNotClass,
                                                                          testMethod.ReflectedType.FullName),
                                                            SkipReason.TypeNotSupported,
                                                            null,
@@ -1092,7 +1085,7 @@ namespace Emtf
                     OnTestSkipped(new TestSkippedEventArgs(testMethod,
                                                            testDescription,
                                                            String.Format(CultureInfo.CurrentCulture,
-                                                                         "The type '{0}' is a generic type definition or open constructed type.",
+                                                                         Res.TryUpdateTestClassInstance_ContainsGenericParameters,
                                                                          testMethod.ReflectedType.FullName),
                                                            SkipReason.TypeNotSupported,
                                                            null,
@@ -1106,7 +1099,7 @@ namespace Emtf
                     OnTestSkipped(new TestSkippedEventArgs(testMethod,
                                                            testDescription,
                                                            String.Format(CultureInfo.CurrentCulture,
-                                                                         "The type '{0}' is an abstract class.",
+                                                                         Res.TryUpdateTestClassInstance_IsAbstract,
                                                                          testMethod.ReflectedType.FullName),
                                                            SkipReason.TypeNotSupported,
                                                            null,
@@ -1120,7 +1113,7 @@ namespace Emtf
                     OnTestSkipped(new TestSkippedEventArgs(testMethod,
                                                            testDescription,
                                                            String.Format(CultureInfo.CurrentCulture,
-                                                                         "The type '{0}' is not public.",
+                                                                         Res.TryUpdateTestClassInstance_IsNotPublic,
                                                                          testMethod.ReflectedType.FullName),
                                                            SkipReason.TypeNotSupported,
                                                            null,
@@ -1129,14 +1122,14 @@ namespace Emtf
                     return false;
                 }
                 
-                defaultConstructor = testMethod.ReflectedType.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, new Type[0], null);
+                defaultConstructor = testMethod.ReflectedType.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes, null);
 
                 if (defaultConstructor == null)
                 {
                     OnTestSkipped(new TestSkippedEventArgs(testMethod,
                                                            testDescription,
                                                            String.Format(CultureInfo.CurrentCulture,
-                                                                         "The type '{0}' does not have a public default constructor.",
+                                                                         Res.TryUpdateTestClassInstance_NoPublicDefaultConstructor,
                                                                          testMethod.ReflectedType.FullName),
                                                            SkipReason.TypeNotSupported,
                                                            null,
@@ -1154,7 +1147,7 @@ namespace Emtf
                     OnTestSkipped(new TestSkippedEventArgs(testMethod,
                                                            testDescription,
                                                            String.Format(CultureInfo.CurrentCulture,
-                                                                         "The default constructor of type the '{0}' threw an exception of the type '{1}'.",
+                                                                         Res.TryUpdateTestClassInstance_ConstructorThrewException,
                                                                          testMethod.ReflectedType.FullName,
                                                                          e.GetType().FullName),
                                                            SkipReason.ConstructorThrewException,
@@ -1188,7 +1181,7 @@ namespace Emtf
 
             foreach (Assembly assembly in assemblies)
             {
-                if (assembly != null)
+                if (assembly != null && !assembly.IsDynamic)
                 {
                     foreach (Type type in assembly.GetExportedTypes())
                     {
@@ -1493,7 +1486,7 @@ namespace Emtf
             {
                 if (actionAttributeType != typeof(PreTestActionAttribute) &&
                     actionAttributeType != typeof(PostTestActionAttribute))
-                    throw new ArgumentException("The only supported attribute types are PreTestActionAttribute and PostTestActionAttribute.", "actionAttributeType");
+                    throw new ArgumentException(Res.ExecuteTestActions_UnsupportedAttributeType, "actionAttributeType");
 
                 TestAction[] actions;
 

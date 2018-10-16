@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,10 +11,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Emtf</RootNamespace>
     <AssemblyName>Emtf</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
-    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -29,8 +32,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,7 +44,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>Bin\Release\Emtf.XML</DocumentationFile>
+    <DocumentationFile>Bin\Release\Emtf.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -55,12 +58,105 @@
     <Compile Include="AsyncTestRun.cs" />
     <Compile Include="ConcurrentTestRunException.cs" />
     <Compile Include="ConstructorInfoExtensions.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Dynamic\DecimalExtensions.cs" />
+    <Compile Include="Dynamic\DelegateGenerator.cs" />
+    <Compile Include="Dynamic\IInstanceWrapper.cs" />
+    <Compile Include="Dynamic\ILGeneratorExtensions.cs" />
+    <Compile Include="Dynamic\InstanceWrapperBase.cs" />
+    <Compile Include="Dynamic\IStaticWrapper.cs" />
+    <Compile Include="Dynamic\ObjectTracker.cs" />
+    <Compile Include="Dynamic\TypeExtensions.cs" />
+    <Compile Include="Dynamic\WrapperFactory.cs" />
+    <Compile Include="Dynamic\WrapperGenerationException.cs" />
+    <Compile Include="Logging\DebugLogger.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LoggerException.cs" />
+    <Compile Include="Logging\StreamLogger.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="PostTestActionAttribute.cs" />
     <Compile Include="PreTestActionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadOnlyAsyncResultWrapper.cs" />
+    <Compile Include="Resources\Assert.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Assert.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\AssertException.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssertException.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\AsyncTestRun.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsyncTestRun.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ConcurrentTestRunException.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConcurrentTestRunException.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Dynamic\DelegateGenerator.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DelegateGenerator.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Dynamic\WrapperFactory.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WrapperFactory.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Dynamic\WrapperGenerationException.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WrapperGenerationException.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Logging\DebugLogger.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DebugLogger.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Logging\Logger.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Logger.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Logging\StreamLogger.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StreamLogger.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\TestCompletedEventArgs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestCompletedEventArgs.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\TestContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestContext.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\TestExecutor.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestExecutor.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\TestRunCompletedEventArgs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestRunCompletedEventArgs.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\TestRunEventArgs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestRunEventArgs.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\TestSkippedEventArgs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestSkippedEventArgs.resx</DependentUpon>
+    </Compile>
     <Compile Include="SkipReason.cs" />
     <Compile Include="SkipTestAttribute.cs" />
     <Compile Include="TestAbortedException.cs" />
@@ -77,14 +173,76 @@
     <Compile Include="TestRunException.cs" />
     <Compile Include="TestSkippedEventArgs.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" Condition="" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Assert.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Assert.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\AssertException.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AssertException.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\AsyncTestRun.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AsyncTestRun.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ConcurrentTestRunException.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ConcurrentTestRunException.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Dynamic\DelegateGenerator.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DelegateGenerator.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Dynamic\WrapperFactory.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WrapperFactory.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Dynamic\WrapperGenerationException.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WrapperGenerationException.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Logging\DebugLogger.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DebugLogger.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Logging\Logger.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Logger.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Logging\StreamLogger.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StreamLogger.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TestCompletedEventArgs.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestCompletedEventArgs.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TestContext.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestContext.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TestExecutor.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestExecutor.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TestRunCompletedEventArgs.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestRunCompletedEventArgs.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TestRunEventArgs.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestRunEventArgs.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TestSkippedEventArgs.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestSkippedEventArgs.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">

@@ -8,6 +8,8 @@
 
 using System;
 
+using Res = Emtf.Resources.TestRunCompletedEventArgs;
+
 namespace Emtf
 {
     /// <summary>
@@ -139,17 +141,17 @@ namespace Emtf
             : base((long)passedTests + (long)failedTests + (long)throwingTests + (long)skippedTests + (long)abortedTests, startTime, concurrentTestRun)
         {
             if (passedTests < 0)
-                throw new ArgumentOutOfRangeException("passedTests", "The number of passed tests must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException("passedTests", Res.ctor_TestsPassedNegative);
             if (failedTests < 0)
-                throw new ArgumentOutOfRangeException("failedTests", "The number of failed tests must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException("failedTests", Res.ctor_TestsFailedNegative);
             if (throwingTests < 0)
-                throw new ArgumentOutOfRangeException("throwingTests", "The number of tests that threw an exception must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException("throwingTests", Res.ctor_TestsThrowingNegative);
             if (skippedTests < 0)
-                throw new ArgumentOutOfRangeException("skippedTests", "The number of skipped tests must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException("skippedTests", Res.ctor_TestsSkippedNegative);
             if (abortedTests < 0)
-                throw new ArgumentOutOfRangeException("abortedTests", "The number of aborted tests must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException("abortedTests", Res.ctor_TestsAbortedNegative);
             if (startTime > endTime)
-                throw new ArgumentException("The start time must not be greater than the end time.", "endTime");
+                throw new ArgumentException(Res.ctor_InvalidStartTime, "endTime");
 
             _endTime   = endTime;
 

@@ -12,6 +12,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
+using Res = Emtf.Resources.TestContext;
+
 namespace Emtf
 {
     /// <summary>
@@ -63,7 +65,7 @@ namespace Emtf
         [DebuggerHidden]
         public void AbortTest(String message)
         {
-            throw new TestAbortedException("The test was aborted from within the test method.", message);
+            throw new TestAbortedException(Res.AbortTest_Message, message);
         }
 
         /// <summary>

@@ -9,6 +9,8 @@
 using System;
 using System.Reflection;
 
+using Res = Emtf.Resources.TestCompletedEventArgs;
+
 namespace Emtf
 {
     /// <summary>
@@ -153,16 +155,16 @@ namespace Emtf
                 throw new ArgumentNullException("message");
 
             if (!Enum.IsDefined(typeof(TestResult), result))
-                throw new ArgumentException("The value of 'result' is not defined in enumeration 'TestResult'.", "result");
+                throw new ArgumentException(Res.ctor_ResultInvalid, "result");
 
             if (exception != null && result != TestResult.Exception)
-                throw new ArgumentException("The parameter 'exception' must be null if 'result' is not TestResult.Exception.", "exception");
+                throw new ArgumentException(Res.ctor_ResultNotException, "exception");
 
             if (exception == null && result == TestResult.Exception)
-                throw new ArgumentException("The parameter 'exception' must not be null if 'result' is TestResult.Exception.", "exception");
+                throw new ArgumentException(Res.ctor_ResultException, "exception");
 
             if (startTime > endTime)
-                throw new ArgumentException("The start time must not be greater than the end time.", "endTime");
+                throw new ArgumentException(Res.ctor_ResultStartTime, "endTime");
 
             _message     = message;
             _userMessage = userMessage;
