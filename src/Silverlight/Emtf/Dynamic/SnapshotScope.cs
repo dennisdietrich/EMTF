@@ -10,9 +10,12 @@ using System;
 
 namespace Emtf.Dynamic
 {
-    public interface IInstanceWrapper
+    [Flags]
+    public enum SnapshotScope
     {
-        Object WrappedInstance { get; }
+        Fields              = 1,
+        Properties          = 2,
+        FieldsAndProperties = 3
     }
 }
 

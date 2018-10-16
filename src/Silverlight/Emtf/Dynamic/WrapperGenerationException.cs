@@ -15,10 +15,6 @@ using Res = Emtf.Resources.Dynamic.WrapperGenerationException;
 
 namespace Emtf.Dynamic
 {
-    /// <summary>
-    /// The exception that is optionally thrown when the wrapper generator encounters unsupported
-    /// members.
-    /// </summary>
 #if !SILVERLIGHT
     [Serializable]
 #endif
@@ -26,63 +22,42 @@ namespace Emtf.Dynamic
     {
         #region Public Properties
 
-        /// <summary>
-        /// Gets the type for which a wrapper was generated.
-        /// </summary>
         public Type WrappedType
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Gets the type of the dynamically generated wrapper.
-        /// </summary>
         public Type WrapperType
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Gets a collection of all constructors that were skipped because they are not supported.
-        /// </summary>
         public ReadOnlyCollection<ConstructorInfo> SkippedConstructors
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Gets a collection of all events that were skipped because they are not supported.
-        /// </summary>
         public ReadOnlyCollection<EventInfo> SkippedEvents
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Gets a collection of all fields that were skipped because they are not supported.
-        /// </summary>
         public ReadOnlyCollection<FieldInfo> SkippedFields
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Gets a collection of all properties that were skipped because they are not supported.
-        /// </summary>
         public ReadOnlyCollection<PropertyInfo> SkippedProperties
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Gets a collection of all methods that were skipped because they are not supported.
-        /// </summary>
         public ReadOnlyCollection<MethodInfo> SkippedMethods
         {
             get;
@@ -93,57 +68,19 @@ namespace Emtf.Dynamic
 
         #region Constructors
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="WrapperGenerationException"/> class using a
-        /// default message.
-        /// </summary>
         public WrapperGenerationException()
             : base(Res.ctor_DefaultMessage)
         {
         }
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="WrapperGenerationException"/> class with a
-        /// caller provided message.
-        /// </summary>
-        /// <param name="message">
-        /// Error message for this instance.
-        /// </param>
         public WrapperGenerationException(String message) : base(message)
         {
         }
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="WrapperGenerationException"/> class with
-        /// caller provided message and inner exception.
-        /// </summary>
-        /// <param name="message">
-        /// Error message for this instance.
-        /// </param>
-        /// <param name="innerException">
-        /// Exception that directly or indirectly led to the wrapper generation exception.
-        /// </param>
         public WrapperGenerationException(String message, Exception innerException) : base(message, innerException)
         {
         }
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="WrapperGenerationException"/> class. This
-        /// constructor is used if the generation of a constructor wrapper fails.
-        /// </summary>
-        /// <param name="wrappedType">
-        /// The type for which a wrapper was generated.
-        /// </param>
-        /// <param name="wrapperType">
-        /// The type of the dynamically generated wrapper.
-        /// </param>
-        /// <param name="skippedConstructors">
-        /// A collection of all constructors that were skipped because they are not supported.
-        /// </param>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown if <paramref name="wrappedType"/>, <paramref name="wrapperType"/> or
-        /// <paramref name="skippedConstructors"/> is null.
-        /// </exception>
         public WrapperGenerationException(Type wrappedType, Type wrapperType, Collection<ConstructorInfo> skippedConstructors)
             : base(Res.ctor_UnsupportedConstructorMessage, null)
         {
@@ -165,33 +102,6 @@ namespace Emtf.Dynamic
             SkippedConstructors = new ReadOnlyCollection<ConstructorInfo>(skippedConstructors);
         }
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="WrapperGenerationException"/> class. This
-        /// constructor is used if the generation of a static or instance wrapper fails.
-        /// </summary>
-        /// <param name="wrappedType">
-        /// The type for which a wrapper was generated.
-        /// </param>
-        /// <param name="wrapperType">
-        /// The type of the dynamically generated wrapper.
-        /// </param>
-        /// <param name="skippedEvents">
-        /// A collection of all events that were skipped because they are not supported.
-        /// </param>
-        /// <param name="skippedFields">
-        /// A collection of all fields that were skipped because they are not supported.
-        /// </param>
-        /// <param name="skippedProperties">
-        /// A collection of all properties that were skipped because they are not supported.
-        /// </param>
-        /// <param name="skippedMethods">
-        /// A collection of all methods that were skipped because they are not supported.
-        /// </param>
-        /// <exception cref="System.ArgumentException">
-        /// Thrown if <paramref name="wrappedType"/>, <paramref name="wrapperType"/>,
-        /// <paramref name="skippedEvents"/>, <paramref name="skippedFields"/>,
-        /// <paramref name="skippedProperties"/> or <paramref name="skippedMethods"/> is null.
-        /// </exception>
         public WrapperGenerationException(Type wrappedType,
                                           Type wrapperType,
                                           Collection<EventInfo>    skippedEvents,
@@ -225,19 +135,6 @@ namespace Emtf.Dynamic
         }
 
 #if !SILVERLIGHT
-        /// <summary>
-        /// Creates a new instance of the <see cref="WrapperGenerationException"/> class and
-        /// initializes it with serialized data.
-        /// </summary>
-        /// <param name="info">
-        /// Serialized state of the original <see cref="WrapperGenerationException"/> object.
-        /// </param>
-        /// <param name="context">
-        /// Contextual information for serialization and deserialization.
-        /// </param>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown if <paramref name="info"/> is null.
-        /// </exception>
         protected WrapperGenerationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -257,18 +154,6 @@ namespace Emtf.Dynamic
         #region Public Methods
 
 #if !SILVERLIGHT
-        /// <summary>
-        /// Serializes the state of the current instance.
-        /// </summary>
-        /// <param name="info">
-        /// <see cref="SerializationInfo"/> object the current state is written to.
-        /// </param>
-        /// <param name="context">
-        /// Contextual information for serialization and deserialization.
-        /// </param>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown if <paramref name="info"/> is null.
-        /// </exception>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

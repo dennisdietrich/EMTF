@@ -65,6 +65,9 @@
     <Compile Include="..\..\Silverlight\Emtf\Dynamic\DelegateGenerator.cs">
       <Link>Dynamic\DelegateGenerator.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\Dynamic\IAssert.cs">
+      <Link>Dynamic\IAssert.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Emtf\Dynamic\IInstanceWrapper.cs">
       <Link>Dynamic\IInstanceWrapper.cs</Link>
     </Compile>
@@ -77,11 +80,26 @@
     <Compile Include="..\..\Silverlight\Emtf\Dynamic\IStaticWrapper.cs">
       <Link>Dynamic\IStaticWrapper.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\Dynamic\ObjectSnapshot.cs">
+      <Link>Dynamic\ObjectSnapshot.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Emtf\Dynamic\ObjectTracker.cs">
       <Link>Dynamic\ObjectTracker.cs</Link>
     </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\Dynamic\Snapshot.cs">
+      <Link>Dynamic\Snapshot.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\Dynamic\SnapshotScope.cs">
+      <Link>Dynamic\SnapshotScope.cs</Link>
+    </Compile>
     <Compile Include="..\..\Silverlight\Emtf\Dynamic\TypeExtensions.cs">
       <Link>Dynamic\TypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\Dynamic\ValueSnapshot.cs">
+      <Link>Dynamic\ValueSnapshot.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\Dynamic\VerificationMode.cs">
+      <Link>Dynamic\VerificationMode.cs</Link>
     </Compile>
     <Compile Include="..\..\Silverlight\Emtf\Dynamic\WrapperFactory.cs">
       <Link>Dynamic\WrapperFactory.cs</Link>

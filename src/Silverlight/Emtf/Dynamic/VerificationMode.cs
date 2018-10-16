@@ -10,9 +10,12 @@ using System;
 
 namespace Emtf.Dynamic
 {
-    public interface IInstanceWrapper
+    [Flags]
+    public enum VerificationMode
     {
-        Object WrappedInstance { get; }
+        Identity         = 1,
+        State            = 2,
+        IdentityAndState = 3
     }
 }
 

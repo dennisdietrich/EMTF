@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{238980e9-467e-44f9-96d3-57fd92cebabc}</ProjectGuid>
-    <SHFBSchemaVersion>1.9.0.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>1.8.0.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -17,15 +17,17 @@
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <HelpFileFormat>Website</HelpFileFormat>
-    <FrameworkVersion>4.0.30319</FrameworkVersion>
+    <FrameworkVersion>3.5</FrameworkVersion>
     <KeepLogFile>False</KeepLogFile>
     <CopyrightText>Copyright &amp;#169%3b Dennis Dietrich</CopyrightText>
-    <HelpTitle>EMTF 2.1 %28Silverlight%29</HelpTitle>
-    <Preliminary>False</Preliminary>
+    <HelpTitle>EMTF 2.0 Beta Reference %28Silverlight%29</HelpTitle>
+    <Preliminary>True</Preliminary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter</MissingTags>
-    <VisibleItems>Attributes, InheritedMembers, InheritedFrameworkMembers, Protected</VisibleItems>
+    <VisibleItems>Attributes, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\..\src\Silverlight\Emtf\Bin\Release\Emtf.dll" />
+<DocumentationSource sourceFile="..\..\..\src\Silverlight\EmtfLogging\Bin\Release\Emtf.Logging.dll" />
+<DocumentationSource sourceFile="..\..\..\src\Silverlight\EmtfLogging\Bin\Release\Emtf.Logging.XML" />
 <DocumentationSource sourceFile="..\..\..\src\Silverlight\Emtf\Bin\Release\Emtf.XML" /></DocumentationSources>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
@@ -36,10 +38,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="system">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\system.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files\Reference Assemblies\Microsoft\Framework\Silverlight\v3.0\system.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\System.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files\Reference Assemblies\Microsoft\Framework\Silverlight\v3.0\System.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <!-- Import the SHFB build targets -->

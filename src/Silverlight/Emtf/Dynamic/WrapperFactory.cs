@@ -22,27 +22,13 @@ using Res = Emtf.Resources.Dynamic.WrapperFactory;
 
 namespace Emtf.Dynamic
 {
-    /// <summary>
-    /// Contains methods for dynamically generating wrappers for both public and non-public
-    /// instance members, static members and constructors.
-    /// </summary>
     public static class WrapperFactory
     {
         #region Public Constants
 
-        /// <summary>
-        /// The namespace and name of the dynamic assembly used for all wrappers.
-        /// </summary>
         public const string DynamicAssemblyName = "Emtf.Dynamic.Runtime";
+        public const string DynamicModuleName   = DynamicAssemblyName + ".dll";
 
-        /// <summary>
-        /// The name of the dynamic module used for all wrappers.
-        /// </summary>
-        public const string DynamicModuleName = DynamicAssemblyName + ".dll";
-
-        /// <summary>
-        /// The namespace used for all generated delegate types.
-        /// </summary>
         public const string DelegateNamespace = DynamicAssemblyName + ".Delegates";
 
         #endregion Public Constants
@@ -145,32 +131,6 @@ namespace Emtf.Dynamic
 
         #region Public Methods
 
-        /// <summary>
-        /// Dynamically generates a wrapper that exposes all public and non-public members of the
-        /// target instance except for members that are not supported.
-        /// </summary>
-        /// <param name="instance">
-        /// The instance to wrap.
-        /// </param>
-        /// <param name="throwException">
-        /// A flag indicating if the method should throw a <see cref="WrapperGenerationException"/>
-        /// when trying to generate a wrapper for a type containing unsupported members.
-        /// </param>
-        /// <returns>
-        /// A wrapper wrapping <paramref name="instance"/> that exposes public and non-public
-        /// members.
-        /// </returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown if <paramref name="instance"/> is null.
-        /// </exception>
-        /// <exception cref="Emtf.Dynamic.WrapperGenerationException">
-        /// Thrown if an instance wrapper for a particular type is requested for the first time,
-        /// <paramref name="throwException"/> is true and the type contains unsupported members.
-        /// </exception>
-        /// <remarks>
-        /// While wrapper types are cached wrapper instances are not. Therefore it is recommended
-        /// to reuse a wrapper for a given instance rather than creating it multiple times.
-        /// </remarks>
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "All languages EMTF is intended for support optional parameters")]
         public static dynamic CreateInstanceWrapper(Object instance, Boolean throwException = false)
         {
@@ -215,35 +175,6 @@ namespace Emtf.Dynamic
             return constructor.Invoke(new Object[] { instance });
         }
 
-        /// <summary>
-        /// Dynamically generates a wrapper that exposes all public and non-public static members
-        /// of a type except for members that are not supported.
-        /// </summary>
-        /// <param name="type">
-        /// The type for which to create a wrapper exposing its static members.
-        /// </param>
-        /// <param name="throwException">
-        /// A flag indicating if the method should throw a <see cref="WrapperGenerationException"/>
-        /// when trying to generate a wrapper for a type containing unsupported static members.
-        /// </param>
-        /// <returns>
-        /// A wrapper exposing the public and non-public static members of <paramref name="type"/>.
-        /// </returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown if <paramref name="type"/> is null.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">
-        /// Thrown if <paramref name="type"/> represents an interface, a generic type definition, a
-        /// generic parameter type or a type containing generic parameters.
-        /// </exception>
-        /// <exception cref="Emtf.Dynamic.WrapperGenerationException">
-        /// Thrown if a static wrapper for a particular type is requested for the first time,
-        /// <paramref name="throwException"/> is true and the type contains unsupported members.
-        /// </exception>
-        /// <remarks>
-        /// While wrapper types are cached wrapper instances are not. Therefore it is recommended
-        /// to reuse static wrappers a much as possible.
-        /// </remarks>
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "All languages EMTF is intended for support optional parameters")]
         public static dynamic CreateStaticWrapper(Type type, Boolean throwException = false)
         {
@@ -288,38 +219,6 @@ namespace Emtf.Dynamic
             return constructor.Invoke(null);
         }
 
-        /// <summary>
-        /// Dynamically generates a wrapper that exposes all public and non-public constructors of
-        /// a type except for constructors that are not supported.
-        /// </summary>
-        /// <param name="type">
-        /// The type for which to create a wrapper exposing its constructors.
-        /// </param>
-        /// <param name="throwException">
-        /// A flag indicating if the method should throw a <see cref="WrapperGenerationException"/>
-        /// when trying to generate a wrapper for a type containing unsupported constructors.
-        /// </param>
-        /// <returns>
-        /// A wrapper exposing the public and non-public constructors of <paramref name="type"/>.
-        /// </returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown if <paramref name="type"/> is null.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">
-        /// Thrown if <paramref name="type"/> represents one of the following: An interface, an
-        /// abstract type, a generic type definition, a generic parameter type, a type containing
-        /// generic parameters, the types System.ArgIterator, System.RuntimeArgumentHandle,
-        /// System.TypedReference or a type directly derived from System.MulticastDelegate.
-        /// </exception>
-        /// <exception cref="Emtf.Dynamic.WrapperGenerationException">
-        /// Thrown if a constructor wrapper for a particular type is requested for the first time,
-        /// <paramref name="throwException"/> is true and the type contains unsupported
-        /// constructors.
-        /// </exception>
-        /// <remarks>
-        /// While wrapper types are cached wrapper instances are not. Therefore it is recommended
-        /// to reuse constructor wrappers a much as possible.
-        /// </remarks>
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "All languages EMTF is intended for support optional parameters")]
         public static dynamic CreateConstructorWrapper(Type type, Boolean throwException = false)
         {

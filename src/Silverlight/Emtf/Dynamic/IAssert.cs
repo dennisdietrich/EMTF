@@ -10,9 +10,9 @@ using System;
 
 namespace Emtf.Dynamic
 {
-    public interface IInstanceWrapper
+    public interface IAssert
     {
-        Object WrappedInstance { get; }
+        void AreEqual<T>(T expected, T actual, String message);
     }
 }
 

@@ -13,9 +13,6 @@ using System.Threading;
 
 namespace Emtf.Dynamic
 {
-    /// <summary>
-    /// Allow uniquely identifying objects without affecting their lifetime.
-    /// </summary>
     public class ObjectTracker
     {
         #region Private Fields
@@ -30,19 +27,6 @@ namespace Emtf.Dynamic
 
         #region Public Methods
 
-        /// <summary>
-        /// Provides a unique GUID for class instances.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of the instance.
-        /// </typeparam>
-        /// <param name="instance">
-        /// The instance for which to get a GUID.
-        /// </param>
-        /// <returns>
-        /// A unique GUID for <paramref name="instance"/> or <see cref="Guid.Empty"/> if
-        /// <paramref name="instance"/> is null.
-        /// </returns>
         public Guid GetObjectGuid<T>(T instance) where T : class
         {
             if (instance == null)
