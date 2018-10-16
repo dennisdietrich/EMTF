@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtfSilverlight", "EmtfSilverlight\EmtfSilverlight.csproj", "{D6600E4F-9826-40A3-846D-6CA79186C798}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtfDesktop", "EmtfDesktop\EmtfDesktop.csproj", "{3DD1634C-9288-42C6-B1AA-66AE61C68598}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimaryTestSuite", "PrimaryTestSuite\PrimaryTestSuite.csproj", "{38D7B68C-793D-47A7-AA85-F289B7ACB9EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97E99F57-6938-4A69-9A4A-DED8C0976115}"
+	ProjectSection(SolutionItems) = preProject
+		Emtf.vsmdi = Emtf.vsmdi
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionTestLibrary", "ReflectionTestLibrary\ReflectionTestLibrary.csproj", "{DEC6C857-DAAA-4262-8AA0-721705A1FFCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtfLoggingSilverlight", "EmtfLoggingSilverlight\EmtfLoggingSilverlight.csproj", "{65EF8450-60B1-4602-AF90-F4C431814E62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtfLoggingDesktop", "EmtfLoggingDesktop\EmtfLoggingDesktop.csproj", "{E7410F6D-F264-4917-96EA-D99EFFD2CB97}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs09.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = EmtfSilverlight\\EmtfSilverlight.csproj
+		SccProjectName1 = EmtfSilverlight
+		SccLocalPath1 = EmtfSilverlight
+		SccProjectUniqueName2 = EmtfDesktop\\EmtfDesktop.csproj
+		SccProjectName2 = EmtfDesktop
+		SccLocalPath2 = EmtfDesktop
+		SccProjectUniqueName3 = PrimaryTestSuite\\PrimaryTestSuite.csproj
+		SccProjectName3 = PrimaryTestSuite
+		SccLocalPath3 = PrimaryTestSuite
+		SccProjectUniqueName4 = ReflectionTestLibrary\\ReflectionTestLibrary.csproj
+		SccProjectName4 = ReflectionTestLibrary
+		SccLocalPath4 = ReflectionTestLibrary
+		SccProjectUniqueName5 = EmtfLoggingSilverlight\\EmtfLoggingSilverlight.csproj
+		SccProjectName5 = EmtfLoggingSilverlight
+		SccLocalPath5 = EmtfLoggingSilverlight
+		SccProjectUniqueName6 = EmtfLoggingDesktop\\EmtfLoggingDesktop.csproj
+		SccProjectName6 = EmtfLoggingDesktop
+		SccLocalPath6 = EmtfLoggingDesktop
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Emtf.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6600E4F-9826-40A3-846D-6CA79186C798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6600E4F-9826-40A3-846D-6CA79186C798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6600E4F-9826-40A3-846D-6CA79186C798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6600E4F-9826-40A3-846D-6CA79186C798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DD1634C-9288-42C6-B1AA-66AE61C68598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DD1634C-9288-42C6-B1AA-66AE61C68598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DD1634C-9288-42C6-B1AA-66AE61C68598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DD1634C-9288-42C6-B1AA-66AE61C68598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38D7B68C-793D-47A7-AA85-F289B7ACB9EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D7B68C-793D-47A7-AA85-F289B7ACB9EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D7B68C-793D-47A7-AA85-F289B7ACB9EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38D7B68C-793D-47A7-AA85-F289B7ACB9EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEC6C857-DAAA-4262-8AA0-721705A1FFCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC6C857-DAAA-4262-8AA0-721705A1FFCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEC6C857-DAAA-4262-8AA0-721705A1FFCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEC6C857-DAAA-4262-8AA0-721705A1FFCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65EF8450-60B1-4602-AF90-F4C431814E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65EF8450-60B1-4602-AF90-F4C431814E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65EF8450-60B1-4602-AF90-F4C431814E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65EF8450-60B1-4602-AF90-F4C431814E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7410F6D-F264-4917-96EA-D99EFFD2CB97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7410F6D-F264-4917-96EA-D99EFFD2CB97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7410F6D-F264-4917-96EA-D99EFFD2CB97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7410F6D-F264-4917-96EA-D99EFFD2CB97}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
