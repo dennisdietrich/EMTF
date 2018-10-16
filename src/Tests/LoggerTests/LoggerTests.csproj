@@ -1,0 +1,137 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F7A329FA-8F0A-43DC-8F24-07364E34E5D4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LoggerTests</RootNamespace>
+    <AssemblyName>LoggerTests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Desktop\EmtfLogging\Kernel32SafeNativeMethods.cs">
+      <Link>ConsoleLogger\Kernel32SafeNativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\PrimaryTestSuite\Support\ExceptionTesting.cs">
+      <Link>Support\ExceptionTesting.cs</Link>
+    </Compile>
+    <Compile Include="ConsoleLogger\ConsoleLoggerTests.cs" />
+    <Compile Include="DebugLogger\DebugLoggerTests.cs" />
+    <Compile Include="Logger\LoggerExtensions.cs" />
+    <Compile Include="Logger\LoggerTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BaseScenario.cs" />
+    <Compile Include="StreamLogger\StreamLoggerTests.cs" />
+    <Compile Include="TestBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Desktop\EmtfLogging\EmtfLogging.csproj">
+      <Project>{E7410F6D-F264-4917-96EA-D99EFFD2CB97}</Project>
+      <Name>EmtfLogging %28Desktop\EmtfLogging%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Desktop\Emtf\Emtf.csproj">
+      <Project>{3DD1634C-9288-42C6-B1AA-66AE61C68598}</Project>
+      <Name>Emtf %28Desktop\Emtf%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DebugLogger\EmptyTestRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DebugLogger\AllScenariosNonConcurrentRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DebugLogger\FullTestNameTestRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DebugLogger\CloseLogger.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DebugLogger\SinglePassingTestConcurrentRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DebugLogger\SingleSkippedTestConcurrentRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DebugLogger\AllScenariosCustomPrefix.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConsoleLogger\EmptyTestRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConsoleLogger\AllScenariosNonConcurrentRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConsoleLogger\FullTestNameTestRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConsoleLogger\CloseLogger.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConsoleLogger\SinglePassingTestConcurrentRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConsoleLogger\SingleSkippedTestConcurrentRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StreamLogger\EmptyTestRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StreamLogger\AllScenariosNonConcurrentRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StreamLogger\CloseLogger.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StreamLogger\FullTestNameTestRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StreamLogger\SinglePassingTestConcurrentRun.baseline" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StreamLogger\SingleSkippedTestConcurrentRun.baseline" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

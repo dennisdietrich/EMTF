@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3DD1634C-9288-42C6-B1AA-66AE61C68598}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Emtf</RootNamespace>
+    <AssemblyName>Emtf</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\Emtf.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Silverlight\Emtf\Assert.cs">
+      <Link>Assert.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\AssertException.cs">
+      <Link>AssertException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\AsyncTestRun.cs">
+      <Link>AsyncTestRun.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\ConcurrentTestRunException.cs">
+      <Link>ConcurrentTestRunException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\ConstructorInfoExtensions.cs">
+      <Link>ConstructorInfoExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\MethodBaseExtensions.cs">
+      <Link>MethodBaseExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\PostTestActionAttribute.cs">
+      <Link>PostTestActionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\PreTestActionAttribute.cs">
+      <Link>PreTestActionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\ReadOnlyAsyncResultWrapper.cs">
+      <Link>ReadOnlyAsyncResultWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\SkipReason.cs">
+      <Link>SkipReason.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\SkipTestAttribute.cs">
+      <Link>SkipTestAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestAbortedException.cs">
+      <Link>TestAbortedException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestAttribute.cs">
+      <Link>TestAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestClassAttribute.cs">
+      <Link>TestClassAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestCompletedEventArgs.cs">
+      <Link>TestCompletedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestContext.cs">
+      <Link>TestContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestEventArgs.cs">
+      <Link>TestEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestExecutor.cs">
+      <Link>TestExecutor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestGroupsAttribute.cs">
+      <Link>TestGroupsAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestResult.cs">
+      <Link>TestResult.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestRunCompletedEventArgs.cs">
+      <Link>TestRunCompletedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestRunEventArgs.cs">
+      <Link>TestRunEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestRunException.cs">
+      <Link>TestRunException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Silverlight\Emtf\TestSkippedEventArgs.cs">
+      <Link>TestSkippedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

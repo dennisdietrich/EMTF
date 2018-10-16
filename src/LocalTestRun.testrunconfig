@@ -3,7 +3,8 @@
   <Description>This is a default test run configuration for a local test run.</Description>
   <CodeCoverage enabled="true">
     <Regular>
-      <CodeCoverageItem binaryFile="EmtfDesktop\bin\Debug\Emtf.dll" pdbFile="EmtfDesktop\bin\Debug\Emtf.pdb" instrumentInPlace="true" />
+      <CodeCoverageItem binaryFile="Desktop\Emtf\bin\Debug\Emtf.dll" pdbFile="Desktop\Emtf\bin\Debug\Emtf.pdb" instrumentInPlace="true" />
+      <CodeCoverageItem binaryFile="Desktop\EmtfLogging\bin\Debug\Emtf.Logging.dll" pdbFile="Desktop\EmtfLogging\bin\Debug\Emtf.Logging.pdb" instrumentInPlace="true" />
     </Regular>
   </CodeCoverage>
   <TestTypeSpecific>

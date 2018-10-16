@@ -20,15 +20,15 @@
     <FrameworkVersion>3.5</FrameworkVersion>
     <KeepLogFile>False</KeepLogFile>
     <CopyrightText>Copyright &amp;#169%3b Dennis Dietrich</CopyrightText>
-    <HelpTitle>EMTF Reference %28.NET Framework%29</HelpTitle>
+    <HelpTitle>EMTF 2.0 Reference %28.NET Framework%29</HelpTitle>
     <Preliminary>False</Preliminary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter</MissingTags>
     <VisibleItems>Attributes, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\..\..\src\EmtfDesktop\bin\Release\Emtf.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\..\..\src\EmtfLoggingDesktop\bin\Release\Emtf.Logging.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\..\..\src\EmtfLoggingDesktop\bin\Release\Emtf.Logging.XML" xmlns="" />
-      <DocumentationSource sourceFile="..\..\..\src\EmtfDesktop\bin\Release\Emtf.XML" xmlns="" />
+      <DocumentationSource sourceFile="..\..\..\src\Desktop\Emtf\bin\Release\Emtf.dll" />
+      <DocumentationSource sourceFile="..\..\..\src\Desktop\EmtfLogging\bin\Release\Emtf.Logging.dll" />
+      <DocumentationSource sourceFile="..\..\..\src\Desktop\EmtfLogging\bin\Release\Emtf.Logging.XML" />
+      <DocumentationSource sourceFile="..\..\..\src\Desktop\Emtf\bin\Release\Emtf.XML" />
     </DocumentationSources>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
