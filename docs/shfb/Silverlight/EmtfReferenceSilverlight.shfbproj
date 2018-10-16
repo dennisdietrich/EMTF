@@ -26,8 +26,7 @@
     <VisibleItems>Attributes, InheritedMembers, InheritedFrameworkMembers, Protected</VisibleItems>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\..\src\Silverlight\Emtf\Bin\Release\Emtf.dll" />
-      <DocumentationSource sourceFile="..\..\..\src\Silverlight\Emtf\Bin\Release\Emtf.XML" />
-    </DocumentationSources>
+<DocumentationSource sourceFile="..\..\..\src\Silverlight\Emtf\Bin\Release\Emtf.XML" /></DocumentationSources>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
@@ -37,10 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="system">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\system.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\system.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\System.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\System.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <!-- Import the SHFB build targets -->

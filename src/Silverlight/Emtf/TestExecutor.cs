@@ -705,6 +705,8 @@ namespace Emtf
             }
         }
 
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         private void ExecuteImpl(IEnumerable<MethodInfo> testMethods, IList<String> groups)
         {
             DateTime          testRunStarted  = DateTime.Now;
@@ -718,89 +720,98 @@ namespace Emtf
             if (!_concurrentTestRuns)
             {
                 TestRunData testRunData = new TestRunData(testMethodQueue, null, new Object());
-                TestRunThread(testRunData);
-                OnTestRunCompleted(new TestRunCompletedEventArgs(testRunData.PassedTests,
-                                                                 testRunData.FailedTests,
-                                                                 testRunData.ThrowingTests,
-                                                                 testRunData.SkippedTests,
-                                                                 testRunData.AbortedTests,
-                                                                 testRunStarted,
-                                                                 DateTime.Now,
-                                                                 _concurrentTestRuns));
+
+                try
+                {
+                    TestRunThread(testRunData);
+                    OnTestRunCompleted(new TestRunCompletedEventArgs(testRunData.PassedTests,
+                                                                     testRunData.FailedTests,
+                                                                     testRunData.ThrowingTests,
+                                                                     testRunData.SkippedTests,
+                                                                     testRunData.AbortedTests,
+                                                                     testRunStarted,
+                                                                     DateTime.Now,
+                                                                     _concurrentTestRuns));
+                }
+                finally
+                {
+                    testRunData.Dispose();
+                }
             }
             else
             {
                 Object        syncRoot    = new Object();
                 TestRunData[] testRunData = new TestRunData[Environment.ProcessorCount];
 
-                for (int i = 0; i < testRunData.Length; i++)
+                try
                 {
-                    Thread      thread = new Thread(TestRunThread);
-                    TestRunData data   = new TestRunData(testMethodQueue, thread, syncRoot);
+                    for (int i = 0; i < testRunData.Length; i++)
+                    {
+                        Thread      thread = new Thread(TestRunThread);
+                        TestRunData data   = new TestRunData(testMethodQueue, thread, syncRoot);
 
-                    thread.Name = String.Format(CultureInfo.CurrentCulture, Res.ExecuteImpl_TestRunThreadName, i);
-                    thread.Start(data);
+                        thread.Name = String.Format(CultureInfo.CurrentCulture, Res.ExecuteImpl_TestRunThreadName, i);
+                        thread.Start(data);
 
-                    testRunData[i] = data;
-                }
+                        testRunData[i] = data;
+                    }
 
-                int runningThreads;
+                    WaitHandle[] runningThreads;
+                    WaitHandle[] crashedThreads;
 
-                do
-                {
-                    Thread.Sleep(ThreadScanInterval);
-                    runningThreads = testRunData.Length;
+                    do
+                    {
+                        runningThreads = (from d in testRunData where d.Thread.IsAlive select d.ThreadCompleted).ToArray();
+                        crashedThreads = (from d in testRunData where !d.Thread.IsAlive && d.Exception != null select d.ThreadCompleted).ToArray();
+
+                        if (crashedThreads.Length > 0 && runningThreads.Length > 0)
+                        {
+                            _cancellationRequested = true;
+
+                            foreach (WaitHandle handle in runningThreads)
+                                handle.WaitOne();
+
+                            runningThreads = new WaitHandle[0];
+                        }
+
+                        if (runningThreads.Length > 0)
+                            WaitHandle.WaitAny(runningThreads);
+                    } while (runningThreads.Length > 0);
+
+                    Exception[] exceptions = (from d in testRunData where d.Exception != null select d.Exception).ToArray();
+
+                    if (exceptions.Length > 0)
+                        throw new ConcurrentTestRunException(exceptions);
+
+                    int totalPassedTests   = 0;
+                    int totalFailedTests   = 0;
+                    int totalThrowingTests = 0;
+                    int totalSkippedTests  = 0;
+                    int totalAbortedTests  = 0;
 
                     foreach (TestRunData data in testRunData)
                     {
-                        if (!data.Thread.IsAlive)
-                        {
-                            if (data.Exception != null)
-                            {
-                                _cancellationRequested = true;
-
-                                for (int i = 0; i < testRunData.Length; i++)
-                                    testRunData[i].Thread.Join();
-
-                                runningThreads = 0;
-                                break;
-                            }
-                            else
-                            {
-                                runningThreads--;
-                            }
-                        }
+                        totalPassedTests   += data.PassedTests;
+                        totalFailedTests   += data.FailedTests;
+                        totalThrowingTests += data.ThrowingTests;
+                        totalSkippedTests  += data.SkippedTests;
+                        totalAbortedTests  += data.AbortedTests;
                     }
-                } while (runningThreads != 0);
 
-                Exception[] exceptions = (from d in testRunData where d.Exception != null select d.Exception).ToArray();
-
-                if (exceptions.Length > 0)
-                    throw new ConcurrentTestRunException(exceptions);
-
-                int totalPassedTests   = 0;
-                int totalFailedTests   = 0;
-                int totalThrowingTests = 0;
-                int totalSkippedTests  = 0;
-                int totalAbortedTests  = 0;
-
-                foreach (TestRunData data in testRunData)
-                {
-                    totalPassedTests   += data.PassedTests;
-                    totalFailedTests   += data.FailedTests;
-                    totalThrowingTests += data.ThrowingTests;
-                    totalSkippedTests  += data.SkippedTests;
-                    totalAbortedTests  += data.AbortedTests;
+                    OnTestRunCompleted(new TestRunCompletedEventArgs(totalPassedTests,
+                                                                     totalFailedTests,
+                                                                     totalThrowingTests,
+                                                                     totalSkippedTests,
+                                                                     totalAbortedTests,
+                                                                     testRunStarted,
+                                                                     DateTime.Now,
+                                                                     _concurrentTestRuns));
                 }
-
-                OnTestRunCompleted(new TestRunCompletedEventArgs(totalPassedTests,
-                                                                 totalFailedTests,
-                                                                 totalThrowingTests,
-                                                                 totalSkippedTests,
-                                                                 totalAbortedTests,
-                                                                 testRunStarted,
-                                                                 DateTime.Now,
-                                                                 _concurrentTestRuns));
+                finally
+                {
+                    foreach (TestRunData data in testRunData)
+                        data.Dispose();
+                }
             }
         }
 
@@ -942,6 +953,10 @@ namespace Emtf
                     testRunData.Exception = e;
                 else
                     throw;
+            }
+            finally
+            {
+                testRunData.ThreadCompleted.Set();
             }
         }
 
@@ -1320,13 +1335,14 @@ namespace Emtf
 
         #region Nested Types
 
-        private class TestRunData
+        private sealed class TestRunData : IDisposable
         {
             #region Private Fields
 
             private readonly Queue<MethodInfo> _testMethodQueue;
             private readonly Thread            _thread;
             private readonly Object            _syncRoot;
+            private readonly EventWaitHandle   _threadCompleted;
 
             private volatile Exception _exception;
 
@@ -1400,6 +1416,14 @@ namespace Emtf
                 }
             }
 
+            internal EventWaitHandle ThreadCompleted
+            {
+                get
+                {
+                    return _threadCompleted;
+                }
+            }
+
             #endregion Internal Properties
 
             #region Constructors
@@ -1409,9 +1433,19 @@ namespace Emtf
                 _testMethodQueue = queue;
                 _thread          = thread;
                 _syncRoot        = syncRoot;
+                _threadCompleted = new ManualResetEvent(false);
             }
 
             #endregion Constructors
+
+            #region Public Methods
+
+            public void Dispose()
+            {
+                _threadCompleted.Dispose();
+            }
+
+            #endregion Public Methods
 
             #region Internal Methods
 
